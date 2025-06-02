@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客語認證考題對對碰 - 精緻版</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* 全局字體設定，確保所有文字使用 Noto Sans TC */
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #a8dadc, #457b9d); /* 清新藍綠漸變背景 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+            overflow: hidden; /* 防止滾動條出現 */
+            position: relative;
+            animation: backgroundFadeIn 1.5s ease-out forwards; /* 背景載入動畫 */
+            /* 游標設定，假設您有 images/cursor_normal.png 檔案 */
+            /* cursor: url('images/cursor_normal.png'), auto; */
+        }
+
+        @keyframes backgroundFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 背景裝飾元素，增加畫面層次感，營造活潑氛圍 */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25); /* 更明顯的半透明白色 */
+            filter: blur(80px); /* 更柔和的模糊 */
+            z-index: 0;
+            animation: floatBubble 12s infinite ease-in-out alternate; /* 漂浮動畫 */
+        }
+
+        body::before {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        body::after {
+            width: 400px;
+            height: 400px;
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 2s;
+        }
+
+        @keyframes floatBubble {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.08); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        .main-card {
+            background-color: rgba(255, 255, 255, 0.98); /* 近乎白色，提升質感 */
+            border-radius: 35px; /* 更圓潤的圓角 */
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4); /* 更深邃的陰影 */
+            padding: 50px; /* 增加內邊距 */
+            width: 95%;
+            max-width: 900px; /* 增加最大寬度 */
+            text-align: center;
+            border: 5px solid #80c7f2; /* 更具活力的淺藍色邊框 */
+            position: relative;
+            z-index: 1;
+            transform: scale(0.95); /* 稍微縮小，看起來更精緻 */
+            animation: fadeInScale 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* 載入動畫 */
+            box-sizing: border-box;
+            opacity: 0; /* 預設隱藏，由動畫顯示 */
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.7);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #0056b3;
+            margin-bottom: 40px;
+            font-size: 4.5em; /* 增大標題字體 */
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+            letter-spacing: 3px;
+            background: linear-gradient(to right, #007bff, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900; /* 加粗 */
+            animation: pulseText 2s infinite alternate; /* 標題脈衝動畫 */
+        }
+
+        @keyframes pulseText {
+            0% { transform: scale(1); text-shadow: 4px 4px 8px rgba(0,0,0,0.3); }
+            100% { transform: scale(1.02); text-shadow: 6px 6px 12px rgba(0,0,0,0.4); }
+        }
+
+        h2 {
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #007bff;
+            font-size: 3em; /* 增大字體 */
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+            font-weight: 700;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            padding: 15px 0;
+            border-bottom: 2px dashed #e0e0e0; /* 虛線分隔線 */
+        }
+
+        .score-area, .timer-area {
+            font-size: 2em; /* 增大字體 */
+            font-weight: bold;
+            color: #28a745; /* 綠色 */
+            background-color: #e6ffe6; /* 淺綠背景 */
+            padding: 12px 25px;
+            border-radius: 15px; /* 更圓潤 */
+            border: 3px solid #5cb85c; /* 深一點的綠色邊框 */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* 更明顯陰影 */
+            min-width: 180px; /* 確保寬度 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bounceIn 0.8s ease-out; /* 載入動畫 */
+        }
+
+        .timer-area {
+            color: #dc3545; /* 紅色 */
+            background-color: #ffe6e6; /* 淺紅背景 */
+            border: 3px solid #dc3545;
+        }
+
+        .timer-area.time-low {
+            color: #ff0000;
+            animation: pulseRed 0.8s infinite alternate;
+        }
+
+        @keyframes pulseRed {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.08); opacity: 0.8; }
+        }
+
+        .question-area {
+            background-color: #f0f8ff; /* 淺藍色背景，更柔和 */
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 3px solid #b3e5fc; /* 淺藍色邊框 */
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1); /* 更深邃的內陰影 */
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 讓內容垂直居中 */
+            align-items: center;
+        }
+
+        #question-text {
+            font-size: 2.8em; /* 增大題目字體 */
+            margin-bottom: 30px;
+            color: #1a4266; /* 深藍色 */
+            line-height: 1.6;
+            font-weight: bold;
+            text-align: center; /* 文字居中 */
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* 圖片題目樣式 */
+        #question-image {
+            max-width: 90%;
+            max-height: 250px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            margin-bottom: 25px;
+            border: 4px solid #fff; /* 白色邊框 */
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr; /* 預設一列 */
+            gap: 25px; /* 增加選項間距 */
+            width: 100%;
+        }
+
+        .option-button {
+            background-color: #64b5f6; /* 活力藍色 */
+            color: white;
+            border: none;
+            padding: 25px 35px; /* 增大按鈕大小 */
+            border-radius: 15px; /* 更圓潤 */
+            font-size: 1.8em; /* 增大選項字體 */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+            word-wrap: break-word;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2); /* 按鈕陰影 */
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase; /* 大寫，更具遊戲感 */
+        }
+
+        .option-button:hover:not(:disabled) {
+            background-color: #2196f3; /* 略深藍色 */
+            transform: translateY(-7px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+        }
+
+        .option-button:active:not(:disabled) {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .option-button:disabled {
+            opacity: 0.6; /* 禁用時更透明 */
+            cursor: not-allowed;
+        }
+
+        .option-button.correct {
+            background-color: #4caf50; /* 綠色，表示正確 */
+            animation: bounceIn 0.6s ease-out forwards; /* 答對動畫 */
+        }
+
+        .option-button.wrong {
+            background-color: #ff5722; /* 活力橘紅色，表示錯誤 */
+            animation: shake 0.4s ease-in-out; /* 答錯動畫 */
+        }
+
+        /* 填充題輸入框樣式 */
+        #fill-in-input {
+            width: 80%;
+            padding: 22px;
+            border: 4px solid #a0c4ff;
+            border-radius: 15px;
+            font-size: 2em;
+            text-align: center;
+            margin-top: 25px;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
+            transition: border-color 0.3s ease;
+            font-weight: bold;
+            color: #333;
+        }
+        #fill-in-input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.1), 0 0 15px rgba(0,123,255,0.5); /* 聚焦時發光 */
+        }
+        #fill-in-submit-button {
+            margin-top: 30px;
+            background-color: #28a745; /* 綠色 */
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 1.8em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+        #fill-in-submit-button:hover {
+            background-color: #218838;
+            transform: translateY(-5px);
+            box-shadow: 0 9px 18px rgba(0,0,0,0.3);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        .feedback-text {
+            font-size: 1.8em;
+            margin-top: 30px;
+            font-weight: bold;
+            color: #e91e63; /* 醒目的粉色 */
+            min-height: 40px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .controls {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px; /* 增加按鈕間距 */
+        }
+
+        .btn {
+            color: white;
+            border: none;
+            padding: 20px 40px; /* 增大按鈕大小 */
+            border-radius: 12px;
+            font-size: 1.8em; /* 增大按鈕字體 */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            min-width: 200px; /* 確保按鈕有最小寬度 */
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 9px 18px rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .btn.primary-btn {
+            background-color: #007bff; /* 藍色，主要行動 */
+        }
+        .btn.primary-btn:hover { background-color: #0056b3; }
+
+        .btn.success-btn {
+            background-color: #28a745; /* 綠色，成功或前進 */
+        }
+        .btn.success-btn:hover { background-color: #218838; }
+
+        .btn.danger-btn {
+            background-color: #dc3545; /* 紅色，危險或重置 */
+        }
+        .btn.danger-btn:hover { background-color: #c82333; }
+
+        .btn.submit-btn {
+            background-color: #673ab7; /* 紫色 */
+        }
+        .btn.submit-btn:hover { background-color: #512da8; }
+
+        .btn.leaderboard-btn {
+            background-color: #ff9800; /* 橘色 */
+        }
+        .btn.leaderboard-btn:hover { background-color: #fb8c00; }
+
+        .btn.return-btn {
+            background-color: #78909c; /* 淺灰色 */
+        }
+        .btn.return-btn:hover { background-color: #546e7a; }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* 排行榜樣式 */
+        .leaderboard-container {
+            border: 5px solid #ffb74d; /* 更清晰的橘色邊框 */
+        }
+
+        .leaderboard-container h2 {
+            color: #ff9800;
+            font-size: 3.2em; /* 增大字體 */
+            margin-bottom: 30px;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .leaderboard-list li {
+            background-color: #fff3e0;
+            margin-bottom: 15px; /* 增加間距 */
+            padding: 18px 30px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.5em; /* 增大字體 */
+            border: 2px solid #ffcc80;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+            font-weight: bold;
+            animation: slideInLeft 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .leaderboard-list li:nth-child(even) { animation-delay: 0.1s; }
+        .leaderboard-list li:nth-child(odd) { animation-delay: 0.2s; }
+
+
+        .leaderboard-list li:first-child {
+            background: linear-gradient(to right, #ffd700, #ffc000); /* 第一名特別色 - 金色漸變 */
+            color: #8B4513; /* 深棕色文字 */
+            border-color: #ffa500;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+            font-size: 1.8em;
+            transform: scale(1.05);
+            transition: transform 0.3s;
+        }
+        .leaderboard-list li:first-child:hover { transform: scale(1.08); }
+
+        .leaderboard-list li:nth-child(2) {
+            background: linear-gradient(to right, #c0c0c0, #a9a9a9); /* 第二名特別色 - 銀色漸變 */
+            color: #333;
+            border-color: #999;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .leaderboard-list li:nth-child(3) {
+            background: linear-gradient(to right, #cd7f32, #b85f26); /* 第三名特別色 - 銅色漸變 */
+            color: white;
+            border-color: #a04e17;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.18);
+        }
+
+        .leaderboard-list li span:first-child {
+            font-weight: bold;
+            color: #d84315;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        }
+        .leaderboard-list li span:last-child {
+            color: #00796b;
+            font-size: 1.1em;
+        }
+        /* 特殊處理前三名的文字顏色 */
+        .leaderboard-list li:first-child span:first-child { color: #8B4513; }
+        .leaderboard-list li:first-child span:last-child { color: #8B4513; }
+        .leaderboard-list li:nth-child(2) span { color: #333; }
+        .leaderboard-list li:nth-child(3) span { color: white; }
+
+
+        /* 模式選擇介面 (首頁) */
+        .level-selection-container {
+            gap: 35px; /* 增加間距 */
+            /* 首頁專屬背景和效果 */
+            /* 如果有 images/main_bg.png 會使用它，否則使用 CSS 漸變 */
+            /* background: url('images/main_bg.png') no-repeat center center/cover; */
+            padding: 60px;
+            border-radius: 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeInScale 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            position: relative;
+            overflow: hidden; /* 確保背景圖案不溢出 */
+        }
+        /* 首頁背景疊加層，增加質感 */
+        .level-selection-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 100%);
+            z-index: 2;
+            pointer-events: none;
+            border-radius: 40px;
+        }
+
+        .level-selection-container h1 {
+            font-size: 5em; /* 首頁標題更大 */
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 3;
+            color: #fff; /* 標題顏色可變為白色以適應背景 */
+            -webkit-text-stroke: 2px #0056b3; /* 描邊增加對比 */
+        }
+        .level-selection-container h2 {
+            font-size: 3.5em;
+            color: #f8f9fa; /* 淺色字體，更好看 */
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .mode-button, .level-button {
+            background-color: #1e88e5; /* 藍色系 */
+            color: white;
+            border: none;
+            padding: 28px 55px; /* 增大按鈕大小 */
+            border-radius: 18px; /* 更圓潤 */
+            font-size: 2.5em; /* 增大字體 */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+            width: 80%; /* 讓按鈕寬度一致 */
+            max-width: 400px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            position: relative;
+            z-index: 3;
+            background: linear-gradient(45deg, #42a5f5, #1976d2); /* 按鈕漸變色 */
+            border: 2px solid #64b5f6;
+        }
+        .mode-button:hover, .level-button:hover {
+            background-color: #1565c0;
+            transform: translateY(-8px) scale(1.02); /* 更大的上移和微縮放效果 */
+            box-shadow: 0 15px 30px rgba(0,0,0,0.45);
+            background: linear-gradient(45deg, #1976d2, #42a5f5); /* hover 時顏色反向 */
+            border-color: #2196f3;
+        }
+
+        /* 多人對戰大廳 */
+        .multiplayer-lobby {
+            border: 5px solid #a0c4ff;
+        }
+        .lobby-controls {
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        #playerNameInput {
+            padding: 18px 25px;
+            border: 3px solid #a0c4ff;
+            border-radius: 12px;
+            font-size: 1.6em;
+            width: calc(100% - 50px); /* 考慮 padding */
+            max-width: 350px;
+            box-shadow: inset 0 3px 8px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+
+        .room-list-container {
+            background-color: #f0f8ff;
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid #bbdefb;
+            max-height: 400px; /* 限制高度，可滾動 */
+            overflow-y: auto; /* 允許滾動 */
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.08);
+        }
+        #availableRoomsList li {
+            background-color: #e3f2fd;
+            margin-bottom: 15px;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 1.4em;
+            border: 2px solid #90caf9;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+        #availableRoomsList li:hover {
+            transform: translateX(5px);
+        }
+
+        #availableRoomsList li button {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        #availableRoomsList li button:hover {
+            background-color: #1976d2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        /* 遊戲房間介面 */
+        .game-room-container {
+            border: 5px solid #a0c4ff;
+        }
+        .game-room-container .players-info {
+            margin-bottom: 35px;
+            font-size: 1.6em;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .game-room-container .players-info p {
+            background-color: #e0f2f7;
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 2px solid #b2ebf2;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+        #room-status-message {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            color: #e91e63;
+            font-weight: bold;
+        }
+
+        /* 虛擬角色區塊 */
+        .mascot-area {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            width: 200px; /* 增大角色 */
+            height: 230px;
+            z-index: 2;
+            pointer-events: none;
+            animation: bounceMascot 3s infinite ease-in-out;
+        }
+
+        .mascot-area img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(10px 10px 20px rgba(0,0,0,0.4)); /* 更明顯的陰影 */
+        }
+
+        @keyframes bounceMascot {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* 虛擬角色表情文字泡泡 */
+        .mascot-speech-bubble {
+            position: absolute;
+            top: -70px; /* 根據圖片調整位置 */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffeb3b; /* 鮮黃色泡泡 */
+            border: 4px solid #fbc02d; /* 更明顯的邊框 */
+            border-radius: 25px; /* 更圓潤 */
+            padding: 12px 18px;
+            font-size: 1.3em;
+            color: #333;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            pointer-events: none;
+            z-index: 10;
+            font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.25);
+            text-align: center;
+        }
+        .mascot-speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 30px;
+            height: 30px;
+            background-color: #ffeb3b;
+            border-right: 4px solid #fbc02d;
+            border-bottom: 4px solid #fbc02d;
+            z-index: 1;
+        }
+        .mascot-speech-bubble.active {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-20px); /* 稍微上移 */
+        }
+
+        /* 連擊提示 */
+        .combo-streak {
+            font-family: 'Noto Sans TC', sans-serif;
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 7em; /* 增大字體 */
+            color: #ffcc00;
+            text-shadow: 6px 6px 12px rgba(0,0,0,0.7);
+            -webkit-text-stroke: 4px #d4af37;
+            pointer-events: none;
+            z-index: 10;
+            font-weight: 900;
+            opacity: 0;
+        }
+
+        @keyframes comboPop {
+            0% { transform: translate(-50%, 20px) scale(0.5); opacity: 0; }
+            50% { transform: translate(-50%, 0px) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, 0px) scale(1); opacity: 0.9; }
+        }
+
+
+        /* RWD 調整 */
+        @media (min-width: 768px) {
+            .options-container {
+                grid-template-columns: 1fr 1fr; /* 兩列 */
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-card {
+                padding: 40px;
+                border-radius: 30px;
+            }
+            h1 { font-size: 4em; margin-bottom: 35px; }
+            h2 { font-size: 2.5em; margin-bottom: 25px; }
+            .header-info { margin-bottom: 30px; }
+            .score-area, .timer-area { font-size: 1.8em; padding: 10px 20px; min-width: 160px; }
+            .question-area { padding: 35px; margin-bottom: 35px; min-height: 220px; }
+            #question-text { font-size: 2.2em; margin-bottom: 25px; }
+            #question-image { max-height: 200px; }
+            .option-button { font-size: 1.6em; padding: 20px 30px; border-radius: 12px; }
+            #fill-in-input { font-size: 1.8em; padding: 18px; border-radius: 12px; }
+            #fill-in-submit-button { font-size: 1.6em; padding: 18px 35px; border-radius: 10px; }
+            .feedback-text { font-size: 1.6em; margin-top: 25px; min-height: 35px; }
+            .controls { margin-top: 35px; gap: 20px; }
+            .btn { font-size: 1.6em; padding: 18px 35px; border-radius: 10px; min-width: 180px; }
+            .leaderboard-list li { font-size: 1.3em; padding: 15px 25px; border-radius: 10px; }
+            .leaderboard-list li:first-child { font-size: 1.5em; }
+            .level-selection-container { padding: 50px; border-radius: 35px; }
+            .level-selection-container h1 { font-size: 4.5em; margin-bottom: 40px; }
+            .level-selection-container h2 { font-size: 3em; margin-bottom: 30px; }
+            .mode-button, .level-button { font-size: 2.2em; padding: 25px 50px; border-radius: 15px; max-width: 380px; }
+            #playerNameInput { font-size: 1.4em; padding: 15px 20px; }
+            #availableRoomsList li { font-size: 1.25em; padding: 18px 25px; border-radius: 12px; }
+            #availableRoomsList li button { padding: 12px 20px; }
+            .game-room-container .players-info { font-size: 1.4em; gap: 15px; }
+            #room-status-message { font-size: 1.6em; margin-bottom: 25px; }
+            .mascot-area { width: 180px; height: 210px; bottom: 25px; left: 25px; }
+            .mascot-speech-bubble { font-size: 1.2em; top: -60px; padding: 10px 15px; border-radius: 20px; }
+            .combo-streak { font-size: 6em; }
+        }
+
+        @media (max-width: 767px) {
+            body { font-size: 14px; }
+            .main-card {
+                padding: 30px;
+                border-radius: 25px;
+            }
+            h1 { font-size: 3.5em; margin-bottom: 30px; }
+            h2 { font-size: 2em; margin-bottom: 20px; }
+            .header-info { flex-direction: column; gap: 15px; margin-bottom: 25px; }
+            .score-area, .timer-area { width: 100%; max-width: 250px; font-size: 1.5em; padding: 8px 15px; }
+            .question-area { padding: 25px; margin-bottom: 25px; min-height: 180px; }
+            #question-text { font-size: 1.8em; margin-bottom: 20px; min-height: 120px; }
+            #question-image { max-height: 150px; }
+            .options-container { grid-template-columns: 1fr; gap: 15px; }
+            .option-button { font-size: 1.3em; padding: 15px 20px; border-radius: 10px; }
+            #fill-in-input { font-size: 1.5em; padding: 12px; border-radius: 10px; }
+            #fill-in-submit-button { font-size: 1.3em; padding: 12px 25px; border-radius: 8px; }
+            .feedback-text { font-size: 1.4em; margin-top: 20px; min-height: 30px; }
+            .controls { margin-top: 30px; gap: 15px; }
+            .btn { font-size: 1.3em; padding: 15px 25px; border-radius: 8px; min-width: 150px; }
+            .leaderboard-list li { font-size: 1.2em; padding: 12px 20px; border-radius: 8px; }
+            .leaderboard-list li:first-child { font-size: 1.4em; }
+            .level-selection-container { padding: 40px; border-radius: 30px; }
+            .level-selection-container h1 { font-size: 3.5em; margin-bottom: 35px; }
+            .level-selection-container h2 { font-size: 2.5em; margin-bottom: 30px; }
+            .mode-button, .level-button { font-size: 2em; padding: 20px 40px; border-radius: 12px; max-width: 350px; }
+            #playerNameInput { font-size: 1.2em; padding: 15px 20px; }
+            #availableRoomsList li { font-size: 1.1em; padding: 15px 20px; border-radius: 12px; }
+            #availableRoomsList li button { padding: 10px 15px; }
+            .game-room-container .players-info { font-size: 1.2em; gap: 10px; }
+            #room-status-message { font-size: 1.4em; margin-bottom: 20px; }
+            .mascot-area { width: 150px; height: 170px; bottom: 20px; left: 20px; }
+            .mascot-speech-bubble { font-size: 1.1em; top: -55px; padding: 8px 12px; border-radius: 18px; }
+            .combo-streak { font-size: 5em; }
+        }
+
+        @media (max-width: 480px) {
+            body { font-size: 12px; }
+            .main-card {
+                padding: 20px;
+                border-radius: 20px;
+            }
+            h1 { font-size: 3em; margin-bottom: 25px; }
+            h2 { font-size: 1.8em; margin-bottom: 15px; }
+            .header-info { gap: 10px; margin-bottom: 20px; }
+            .score-area, .timer-area { font-size: 1.3em; padding: 6px 12px; }
+            .question-area { padding: 20px; margin-bottom: 20px; min-height: 150px; }
+            #question-text { font-size: 1.6em; margin-bottom: 15px; min-height: 100px; }
+            #question-image { max-height: 120px; }
+            .option-button { font-size: 1.1em; padding: 12px 15px; border-radius: 8px; }
+            #fill-in-input { font-size: 1.3em; padding: 10px; border-radius: 8px; }
+            #fill-in-submit-button { font-size: 1.1em; padding: 10px 20px; border-radius: 6px; }
+            .feedback-text { font-size: 1.2em; margin-top: 15px; min-height: 25px; }
+            .controls { margin-top: 25px; gap: 10px; }
+            .btn { font-size: 1.1em; padding: 12px 20px; border-radius: 6px; min-width: 120px; }
+            .leaderboard-list li { font-size: 1em; padding: 10px 15px; border-radius: 6px; }
+            .leaderboard-list li:first-child { font-size: 1.2em; }
+            .level-selection-container { padding: 30px; border-radius: 25px; }
+            .level-selection-container h1 { font-size: 3em; margin-bottom: 30px; }
+            .level-selection-container h2 { font-size: 2.2em; margin-bottom: 20px; }
+            .mode-button, .level-button { font-size: 1.8em; padding: 18px 35px; border-radius: 10px; max-width: 300px; }
+            #playerNameInput { font-size: 1em; padding: 10px 15px; }
+            #availableRoomsList li { font-size: 0.95em; padding: 12px 15px; border-radius: 8px; }
+            #availableRoomsList li button { padding: 8px 12px; }
+            .game-room-container .players-info { font-size: 1em; gap: 8px; }
+            #room-status-message { font-size: 1.2em; margin-bottom: 15px; }
+            .mascot-area { width: 120px; height: 140px; bottom: 15px; left: 15px; }
+            .mascot-speech-bubble { font-size: 1em; top: -45px; padding: 6px 10px; border-radius: 15px; }
+            .combo-streak { font-size: 4em; }
+        }
+
+    </style>
+</head>
+<body>
+    <audio id="correctSound" src="sounds/correct.mp3" preload="auto"></audio>
+    <audio id="wrongSound" src="sounds/wrong.mp3" preload="auto"></audio>
+    <audio id="timeWarningSound" src="sounds/time_warning.mp3" preload="auto"></audio>
+    <audio id="backgroundMusic" src="sounds/bg_music.mp3" loop preload="auto"></audio>
+
+    <div class="mascot-area">
+        <img id="mascotImage" src="images/mascot_neutral.png" alt="客家小精靈">
+        <div id="mascotSpeechBubble" class="mascot-speech-bubble"></div>
+    </div>
+
+    <div id="comboStreakDisplay" class="combo-streak hidden"></div>
+
+    <div class="main-card level-selection-container" id="levelSelectionContainer">
+        <h1>客語認證考題對對碰</h1>
+        <h2>歡迎來到客語的世界！</h2>
+        <p style="font-size: 1.5em; color: #5a5a5a; margin-bottom: 30px; line-height: 1.8;">
+            透過輕鬆有趣的遊戲，學習客家單字、詞彙和諺語。<br>
+            挑戰自己，成為客語大師吧！
+        </p>
+        <div class="controls" style="margin-top: 0;">
+            <button class="mode-button" data-mode="single">單人挑戰</button>
+            <button class="mode-button" data-mode="multi">多人對戰</button>
+            <button id="show-leaderboard-initial" class="btn leaderboard-btn">查看客語大師榜</button>
+        </div>
+    </div>
+
+    <div class="main-card game-container hidden" id="gameContainer">
+        <div class="header-info">
+            <div class="score-area">分數: <span id="score">0</span> / <span id="totalQuestions">10</span></div>
+            <div class="timer-area">倒數: <span id="timer">30</span> 秒</div>
+        </div>
+
+        <div class="question-area">
+            <div id="question-text"></div>
+            <img id="question-image" src="" alt="題目圖片" class="hidden">
+            <div class="options-container" id="optionsContainer">
+                </div>
+            <div id="fillInContainer" class="fill-in-container hidden">
+                <input type="text" id="fill-in-input" placeholder="請輸入答案">
+                <button id="fill-in-submit-button" class="btn success-btn">提交答案</button>
+            </div>
+        </div>
+
+        <div class="feedback-text" id="feedbackText"></div>
+
+        <div class="controls">
+            <button id="nextButton" class="btn success-btn hidden">下一題</button>
+            <button id="restartButton" class="btn primary-btn hidden">重新開始</button>
+            <button id="submitScoreButton" class="btn submit-btn hidden">提交分數到排行榜</button>
+            <button id="showLeaderboardGameEndButton" class="btn leaderboard-btn hidden">查看總排行榜</button>
+            <button id="returnToModeSelectionFromGame" class="btn return-btn hidden">返回模式選擇</button>
+        </div>
+    </div>
+
+    <div class="main-card multiplayer-lobby hidden" id="multiplayerLobby">
+        <h1>多人對戰大廳</h1>
+        <p style="font-size: 1.4em; color: #666; margin-bottom: 30px;">
+            和你的朋友一起挑戰客語吧！
+        </p>
+        <div class="lobby-controls controls" style="margin-top: 0;">
+            <input type="text" id="playerNameInput" placeholder="輸入你的名字" value="玩家">
+            <button id="createRoomBtn" class="btn success-btn">創建房間</button>
+            <button id="joinRoomBtn" class="btn primary-btn">加入房間</button>
+            <button id="refreshRoomsBtn" class="btn leaderboard-btn">刷新房間列表</button>
+            <button id="returnToModeSelectionFromLobby" class="btn return-btn">返回模式選擇</button>
+        </div>
+        <div class="room-list-container">
+            <h3>可用房間列表：</h3>
+            <ul id="availableRoomsList">
+                </ul>
+        </div>
+    </div>
+
+    <div class="main-card game-room-container hidden" id="gameRoomContainer">
+        <h2>房間 ID: <span id="currentRoomId"></span></h2>
+        <div class="players-info">
+            <p>你的名字: <span id="myPlayerName"></span></p>
+            <p>對手名字: <span id="opponentPlayerName"></span></p>
+            <p>你的分數: <span id="myPlayerScore">0</span></p>
+            <p>對手分數: <span id="opponentPlayerScore">0</span></p>
+        </div>
+        <div id="room-status-message">等待其他玩家加入...</div>
+        <button id="startGameInRoomBtn" class="btn success-btn hidden">開始遊戲</button>
+        <button id="leaveRoomBtn" class="btn danger-btn hidden">離開房間</button>
+        </div>
+
+    <div class="main-card leaderboard-container hidden" id="leaderboardContainer">
+        <h2>🏅 客語大師榜 🏅</h2>
+        <ul id="leaderboardList" class="leaderboard-list">
+            </ul>
+        <div class="controls">
+            <button id="returnFromLeaderboard" class="btn return-btn">返回</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script> <script>
+        // --- 您的 Firebase 配置資訊 ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyCVvM_kfmLy68NK-ILq63me50Gn6ROiWJ8",
+            authDomain: "snake-8bc6a.firebaseapp.com",
+            databaseURL: "https://snake-8bc6a-default-rtdb.firebaseio.com",
+            projectId: "snake-8bc6a",
+            storageBucket: "snake-8bc6a.firebasestorage.app",
+            messagingSenderId: "800157644026",
+            appId: "1:800157644026:web:3b90c15789cacfef918543",
+            measurementId: "G-NJ34S53TSV"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const analytics = firebase.analytics(); // 初始化 Analytics
+        const db = firebase.firestore();
+
+        // --- 遊戲設定 ---
+        const NUM_QUESTIONS_PER_GAME = 10;
+        const TIME_PER_QUESTION = 30; // 每題秒數
+        const WARNING_TIME = 10; // 倒數警告時間
+
+        // --- DOM 元素 ---
+        const gameContainer = document.getElementById('gameContainer');
+        const levelSelectionContainer = document.getElementById('levelSelectionContainer');
+        const leaderboardContainer = document.getElementById('leaderboardContainer');
+        const multiplayerLobby = document.getElementById('multiplayerLobby');
+        const gameRoomContainer = document.getElementById('gameRoomContainer');
+
+        const scoreDisplay = document.getElementById('score');
+        const totalQuestionsDisplay = document.getElementById('totalQuestions');
+        const timerDisplay = document.getElementById('timer');
+        const timerArea = document.querySelector('.timer-area');
+        const questionText = document.getElementById('question-text');
+        const questionImage = document.getElementById('question-image'); // 新增圖片元素
+        const optionsContainer = document.getElementById('optionsContainer');
+        const fillInContainer = document.getElementById('fillInContainer');
+        const fillInInput = document.getElementById('fill-in-input');
+        const fillInSubmitButton = document.getElementById('fill-in-submit-button');
+        const feedbackText = document.getElementById('feedbackText');
+
+        const nextButton = document.getElementById('nextButton');
+        const restartButton = document.getElementById('restartButton');
+        const submitScoreButton = document.getElementById('submitScoreButton');
+        const showLeaderboardInitialButton = document.getElementById('show-leaderboard-initial');
+        const showLeaderboardGameEndButton = document.getElementById('showLeaderboardGameEndButton');
+        const returnFromLeaderboardButton = document.getElementById('returnFromLeaderboard');
+        const leaderboardList = document.getElementById('leaderboardList');
+        // --- 修正點 1: 確保返回模式選擇的按鈕 ID 存在且唯一 ---
+        const returnToModeSelectionFromGameButton = document.getElementById('returnToModeSelectionFromGame'); // 從遊戲結束返回
+        const returnToModeSelectionFromLevelsButton = document.getElementById('returnToModeSelectionFromLevels'); // 從難度選擇返回 (此元素是動態創建的，需要調整監聽方式)
+
+
+        // 多人對戰相關 DOM 元素
+        const modeButtons = document.querySelectorAll('.mode-button'); // 原來的 modeButtons
+        const playerNameInput = document.getElementById('playerNameInput');
+        const createRoomBtn = document.getElementById('createRoomBtn');
+        const joinRoomBtn = document.getElementById('joinRoomBtn');
+        const refreshRoomsBtn = document.getElementById('refreshRoomsBtn');
+        const availableRoomsList = document.getElementById('availableRoomsList');
+        const returnToModeSelectionFromLobbyBtn = document.getElementById('returnToModeSelectionFromLobby'); // 從多人大廳返回
+
+        const currentRoomIdDisplay = document.getElementById('currentRoomId');
+        const myPlayerNameDisplay = document.getElementById('myPlayerName');
+        const opponentPlayerNameDisplay = document.getElementById('opponentPlayerName');
+        const myPlayerScoreDisplay = document.getElementById('myPlayerScore');
+        const opponentPlayerScoreDisplay = document.getElementById('opponentPlayerScore');
+        const roomStatusMessage = document.getElementById('room-status-message');
+        const startGameInRoomBtn = document.getElementById('startGameInRoomBtn');
+        const leaveRoomBtn = document.getElementById('leaveRoomBtn');
+
+        // 音效元素
+        const correctSound = document.getElementById('correctSound');
+        const wrongSound = document.getElementById('wrongSound');
+        const timeWarningSound = document.getElementById('timeWarningSound');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+
+        // 虛擬角色元素
+        const mascotImage = document.getElementById('mascotImage');
+        const mascotSpeechBubble = document.getElementById('mascotSpeechBubble');
+
+        // 連擊提示元素
+        const comboStreakDisplay = document.getElementById('comboStreakDisplay');
+
+
+        // --- 遊戲變數 ---
+        let score = 0;
+        let currentQuestionIndex = 0;
+        let currentQuestions = [];
+        let timerInterval;
+        let timeLeft = TIME_PER_QUESTION;
+        let selectedLevel = 'medium'; // 預設難度
+
+        let comboStreak = 0; // 連擊數
+
+        // 多人對戰相關變數
+        let currentMode = 'single'; // 'single' 或 'multi'
+        let currentRoomId = null;
+        let myPlayerId = null; // 每個玩家的唯一 ID
+        let myPlayerName = '玩家';
+        let opponentPlayerId = null;
+        let roomSnapshotListener = null; // 用於取消 Firestore 監聽
+
+        // --- 題庫資料 ---
+        // 校對後的題目，移除聽力題，增加圖片題和形容詞猜字題
+        const allQuestions = [
+            // 初級題目 (單字翻譯)
+            { type: 'multiple-choice', level: 'easy', question: "「你好」个客語怎講？", options: ["多謝", "你好", "再見", "毋使愁"], answer: 1 },
+            { type: 'multiple-choice', level: 'easy', question: "「謝謝」个客語怎講？", options: ["多謝", "你好", "承蒙你", "毋會"], answer: 0 },
+            { type: 'fill-in-the-blank', level: 'easy', question: "請填寫「不客氣」个客語：毋使_______。", answer: "愁" },
+            { type: 'multiple-choice', level: 'easy', question: "「吃飯」个客語怎講？", options: ["食飯", "食茶", "食點心", "食麵"], answer: 0 },
+            { type: 'multiple-choice', level: 'easy', question: "「喝水」个客語怎講？", options: ["食水", "啉水", "飲水", "洗手"], answer: 1 },
+            { type: 'fill-in-the-blank', level: 'easy', question: "請填寫「再見」个客語：_______。", answer: "再見" },
+            { type: 'multiple-choice', level: 'easy', question: "「早上好」个客語怎講？", options: ["早安", "下晝好", "夜晡好", "暗晡夜好"], answer: 0 },
+            { type: 'multiple-choice', level: 'easy', question: "「睡覺」个客語怎講？", options: ["食飽", "睡目", "著衫", "洗身"], answer: 1 },
+            { type: 'fill-in-the-blank', level: 'easy', question: "請填寫「錢」个客語：_______。", answer: "錢" },
+            { type: 'multiple-choice', level: 'easy', question: "「回家」个客語怎講？", options: ["轉屋下", "上班", "讀書", "運動"], answer: 0 },
+
+            // 中級題目 (詞語填空、簡單描述猜字)
+            { type: 'multiple-choice', level: 'medium', question: "「麼个」在客語中是什麼意思？", options: ["什麼", "哪裡", "多少", "如何"], answer: 0 },
+            { type: 'fill-in-the-blank', level: 'medium', question: "請填寫「漂亮」个客語：_______靚。", answer: "靚" },
+            { type: 'multiple-choice', level: 'medium', question: "「毋識」在客語中是什麼意思？", options: ["認識", "不認識", "知道", "不知道"], answer: 1 },
+            { type: 'multiple-choice', level: 'medium', question: "「搞麼个」在客語中是什麼意思？", options: ["做什麼", "怎麼辦", "為什麼", "在哪裡"], answer: 0 },
+            { type: 'fill-in-the-blank', level: 'medium', question: "請填寫「開心」个客語：歡_______。", answer: "喜" },
+            { type: 'multiple-choice', level: 'medium', question: "「鑊嫲」在客語中是什麼意思？", options: ["鍋子", "碗", "筷子", "盤子"], answer: 0 },
+            { type: 'multiple-choice', level: 'medium', question: "「日頭」在客語中是什麼意思？", options: ["月亮", "太陽", "星星", "雲朵"], answer: 1 },
+            { type: 'fill-in-the-blank', level: 'medium', question: "請填寫「客人」个客語：_______人。", answer: "客" },
+            { type: 'multiple-choice', level: 'medium', question: "「毋好意思」在客語中是什麼意思？", options: ["對不起", "沒關係", "請", "謝謝"], answer: 0 },
+            { type: 'fill-in-the-blank', level: 'medium', question: "請填寫「學校」个客語：學_______。", answer: "校" },
+            { type: 'image-choice', level: 'medium', image: 'images/flower.png', question: "請看圖片，選擇客語中「花」的說法：", options: ["竹", "樹", "花", "草"], answer: 2 }, // 假設您有 `images/flower.png`
+            { type: 'description-fill-in', level: 'medium', question: "形容一個人「很瘦」，客語會說「承_______」。", answer: "瘦" },
+
+            // 高級題目 (諺語填空、圖片題、形容詞猜字)
+            { type: 'multiple-choice', level: 'hard', question: "「禾埕」在客語中是什麼意思？", options: ["曬穀場", "客廳", "廚房", "臥室"], answer: 0 }, // 修正翻譯
+            { type: 'fill-in-the-blank', level: 'hard', question: "「頭擺」在客語中是指「_______以前」。", answer: "很久" },
+            { type: 'multiple-choice', level: 'hard', question: "「細人仔」在客語中是什麼意思？", options: ["大人", "小孩", "老人", "青年"], answer: 1 },
+            { type: 'multiple-choice', level: 'hard', question: "「正經」在客語中是什麼意思？", options: ["真的", "假的", "可能", "也許"], answer: 0 },
+            { type: 'fill-in-the-blank', level: 'hard', question: "「打幫手」在客語中是指「_______忙」。", answer: "幫" },
+            { type: 'multiple-choice', level: 'hard', question: "「遽遽」在客語中是什麼意思？", options: ["慢慢地", "快點", "安靜地", "大聲地"], answer: 1 },
+            { type: 'fill-in-the-blank', level: 'hard', question: "「燥毋燥」在客語中是問「_______不_______」。", answer: "熱不熱" },
+            { type: 'multiple-choice', level: 'hard', question: "「箸」在客語中是什麼意思？", options: ["湯匙", "碗", "筷子", "盤子"], answer: 2 },
+            { type: 'fill-in-the-blank', level: 'hard', question: "「食飽飯」个客語是「_______飽飯」。", answer: "食" },
+            { type: 'multiple-choice', level: 'hard', question: "「撖」在客語中是什麼意思？", options: ["很", "吃", "做", "走"], answer: 0 },
+            { type: 'image-choice', level: 'hard', image: 'images/mountain.png', question: "看到這張圖片，請選擇客語中「山」的說法：", options: ["水", "田", "山", "路"], answer: 2 }, // 假設您有 `images/mountain.png`
+            { type: 'description-fill-in', level: 'hard', question: "形容一個人「很會說話/很能說」，客語會說「講到出_______」。", answer: "花" }, // 講到出花 - 形容口才好，說話花俏動聽
+        ];
+
+        // --- 函數定義 ---
+
+        // 生成隨機題目
+        function getRandomQuestions(num, level) {
+            const filteredQuestions = allQuestions.filter(q => q.level === level);
+            const shuffled = filteredQuestions.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, num);
+        }
+
+        // 啟動計時器 (單人模式專用)
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = TIME_PER_QUESTION;
+            timerDisplay.textContent = timeLeft;
+            timerArea.classList.remove('time-low'); // 移除警告樣式
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // 更新計時器 (單人模式專用)
+        function updateTimer() {
+            timerDisplay.textContent = timeLeft;
+            if (timeLeft <= WARNING_TIME && timeLeft > 0) {
+                timerArea.classList.add('time-low');
+                playSound(timeWarningSound); // 時間快結束時播放警告音
+            } else if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timerArea.classList.add('time-low');
+                feedbackText.textContent = '時間到了！';
+                disableControls();
+                nextButton.classList.remove('hidden');
+                comboStreak = 0; // 時間到，連擊歸零
+                showMascotSpeech("時間到囉！下次反應快一點！", 1500, 'images/mascot_sad.png'); // 時間到，小精靈提示
+                comboStreakDisplay.classList.add('hidden');
+            }
+            timeLeft--;
+        }
+
+        // 啟用控制項
+        function enableControls() {
+            Array.from(optionsContainer.children).forEach(button => {
+                button.disabled = false;
+                button.classList.remove('correct', 'wrong'); // 清除上次的答案顏色
+            });
+            fillInInput.disabled = false;
+            fillInSubmitButton.disabled = false;
+            fillInInput.style.borderColor = '#a0c4ff'; // 重置邊框顏色
+        }
+
+        // 禁用控制項
+        function disableControls() {
+            Array.from(optionsContainer.children).forEach(button => {
+                button.disabled = true;
+            });
+            fillInInput.disabled = true;
+            fillInSubmitButton.disabled = true;
+            fillInInput.style.borderColor = '#ccc'; // 禁用時變灰
+        }
+
+        // 音效播放函數
+        function playSound(soundElement) {
+            if (soundElement) {
+                soundElement.currentTime = 0; // 從頭播放
+                soundElement.play().catch(e => console.log("音效播放失敗:", e));
+            }
+        }
+
+        // 虛擬角色互動函數
+        function showMascotSpeech(message, duration = 2000, imageSrc = 'images/mascot_neutral.png') {
+            mascotSpeechBubble.textContent = message;
+            mascotImage.src = imageSrc; // 根據情緒改變圖片
+
+            mascotSpeechBubble.classList.add('active');
+            clearTimeout(mascotSpeechBubble.timer);
+            mascotSpeechBubble.timer = setTimeout(() => {
+                mascotSpeechBubble.classList.remove('active');
+                mascotImage.src = 'images/mascot_neutral.png'; // 回復中性表情
+            }, duration);
+        }
+
+        // 連擊顯示函數
+        function showComboStreak() {
+            if (comboStreak > 1) { // 至少2連擊才顯示
+                comboStreakDisplay.textContent = `${comboStreak} 連擊！`;
+                comboStreakDisplay.classList.remove('hidden');
+                // 觸發動畫
+                comboStreakDisplay.style.animation = 'none'; // 重置動畫
+                void comboStreakDisplay.offsetWidth; // 觸發重繪
+                comboStreakDisplay.style.animation = 'comboPop 0.8s ease-out forwards';
+
+                clearTimeout(comboStreakDisplay.timer);
+                comboStreakDisplay.timer = setTimeout(() => {
+                    comboStreakDisplay.classList.add('hidden');
+                }, 1000); // 顯示1秒
+            } else {
+                comboStreakDisplay.classList.add('hidden');
+            }
+        }
+
+
+        // 單人模式的載入題目
+        function loadQuestionSinglePlayer() {
+            optionsContainer.innerHTML = '';
+            fillInContainer.classList.add('hidden');
+            fillInInput.value = '';
+            feedbackText.textContent = '';
+            questionImage.classList.add('hidden'); // 隱藏圖片
+            questionImage.src = ''; // 清空圖片源
+
+            // 確保背景音樂播放 (如果還沒播放)
+            if (backgroundMusic.paused) {
+                backgroundMusic.play().catch(e => console.log("背景音樂播放失敗:", e));
+            }
+
+            if (currentQuestionIndex < currentQuestions.length) {
+                startTimer(); // 單人模式使用本地計時
+
+                const q = currentQuestions[currentQuestionIndex];
+                questionText.textContent = q.question;
+
+                if (q.image) { // 如果是圖片題
+                    questionImage.src = q.image;
+                    questionImage.classList.remove('hidden');
+                }
+
+                if (q.type === 'multiple-choice' || q.type === 'image-choice') {
+                    optionsContainer.classList.remove('hidden');
+                    optionsContainer.style.display = 'grid';
+                    q.options.forEach((option, index) => {
+                        const button = document.createElement('button');
+                        button.classList.add('option-button');
+                        button.textContent = option;
+                        button.dataset.index = index;
+                        button.addEventListener('click', () => checkAnswerSinglePlayer(button, index, q.answer, q.type));
+                        optionsContainer.appendChild(button);
+                    });
+                } else if (q.type === 'fill-in-the-blank' || q.type === 'description-fill-in') {
+                    optionsContainer.classList.add('hidden');
+                    fillInContainer.classList.remove('hidden');
+                    fillInInput.focus();
+                    fillInSubmitButton.onclick = () => checkAnswerSinglePlayer(null, fillInInput.value.trim(), q.answer, q.type);
+                    fillInInput.onkeydown = (event) => {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            fillInSubmitButton.click();
+                        }
+                    };
+                }
+                nextButton.classList.add('hidden');
+                enableControls(); // 啟用控制項
+                showMascotSpeech("加油！看你的了！", 1500); // 每次出題都讓小精靈說話
+            } else {
+                // 遊戲結束
+                clearInterval(timerInterval);
+                timerArea.classList.add('hidden');
+                questionText.innerHTML = `遊戲結束！您的分數是 ${score} / ${currentQuestions.length}。承蒙您个參與！<br><small>想知道您的成績在排行榜上的表現嗎？</small>`;
+                optionsContainer.innerHTML = '';
+                fillInContainer.classList.add('hidden');
+                feedbackText.textContent = '';
+                nextButton.classList.add('hidden');
+                restartButton.classList.remove('hidden');
+                submitScoreButton.classList.remove('hidden');
+                showLeaderboardGameEndButton.classList.remove('hidden');
+                returnToModeSelectionFromGameButton.classList.remove('hidden'); // 確保這個按鈕顯示出來
+
+                backgroundMusic.pause();
+                backgroundMusic.currentTime = 0;
+
+                if (score / currentQuestions.length > 0.8) {
+                    showMascotSpeech("太棒了！您是客語小天才！", 3000, 'images/mascot_happy.png');
+                } else if (score / currentQuestions.length > 0.5) {
+                    showMascotSpeech("表現不錯喔！繼續努力！", 3000, 'images/mascot_smile.png');
+                } else {
+                    showMascotSpeech("別灰心，多練習就進步了！", 3000, 'images/mascot_sad.png');
+                }
+            }
+        }
+
+        // 單人模式的檢查答案
+        function checkAnswerSinglePlayer(clickedElement, selectedValue, correctAnswer, type) {
+            clearInterval(timerInterval);
+            disableControls();
+
+            let isCorrect = false;
+            let actualCorrectAnswer = '';
+
+            if (type === 'multiple-choice' || type === 'image-choice') {
+                if (selectedValue === correctAnswer) {
+                    isCorrect = true;
+                }
+                actualCorrectAnswer = currentQuestions[currentQuestionIndex].options[correctAnswer];
+                if (clickedElement) {
+                    clickedElement.classList.add(isCorrect ? 'correct' : 'wrong');
+                    if (!isCorrect) {
+                        Array.from(optionsContainer.children).forEach(button => {
+                            if (parseInt(button.dataset.index) === correctAnswer) {
+                                button.classList.add('correct');
+                            }
+                        });
+                    }
+                }
+            } else if (type === 'fill-in-the-blank' || type === 'description-fill-in') {
+                // 將使用者輸入的答案和正確答案都轉換為小寫英文，並移除所有非中文字元，以進行更寬鬆的匹配
+                const normalizedSelected = String(selectedValue).toLowerCase().replace(/[^\u4e00-\u9fa5a-z0-9]/g, '');
+                const normalizedCorrect = String(correctAnswer).toLowerCase().replace(/[^\u4e00-\u9fa5a-z0-9]/g, '');
+                isCorrect = (normalizedSelected === normalizedCorrect);
+                actualCorrectAnswer = correctAnswer;
+                fillInInput.disabled = true;
+                fillInSubmitButton.disabled = true;
+                if (isCorrect) {
+                    fillInInput.style.borderColor = '#8bc34a';
+                } else {
+                    fillInInput.style.borderColor = '#ff7043';
+                }
+            }
+
+            if (isCorrect) {
+                score++;
+                comboStreak++;
+                scoreDisplay.textContent = score;
+                feedbackText.textContent = '答對了！承蒙您！';
+                playSound(correctSound);
+                showMascotSpeech("你真棒！", 1500, 'images/mascot_happy.png');
+                showComboStreak();
+            } else {
+                comboStreak = 0;
+                feedbackText.textContent = `答錯了！正確答案是：「${actualCorrectAnswer}」。`;
+                playSound(wrongSound);
+                showMascotSpeech("沒關係！再想想！", 1500, 'images/mascot_sad.png');
+                comboStreakDisplay.classList.add('hidden');
+            }
+            nextButton.classList.remove('hidden');
+        }
+
+        // 下一題（單人模式）
+        function nextQuestion() {
+            if (currentMode === 'single') {
+                currentQuestionIndex++;
+                loadQuestionSinglePlayer();
+            } else {
+                // 多人模式下 '下一題' 按鈕行為由房主觸發，並透過 Firebase 監聽更新
+                console.log("多人模式下，下一題邏輯由房間狀態更新觸發。");
+            }
+        }
+
+        // --- 排行榜相關功能 ---
+        async function submitScore() {
+            const playerName = prompt('請輸入您的姓名 (將用於排行榜):', localStorage.getItem('playerName') || '匿名玩家');
+            if (playerName) {
+                localStorage.setItem('playerName', playerName);
+                try {
+                    await db.collection('leaderboard').add({
+                        name: playerName,
+                        score: score,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    alert('分數已提交成功！');
+                    showLeaderboard();
+                } catch (e) {
+                    console.error("提交分數失敗: ", e);
+                    alert('提交分數失敗，請稍後再試。');
+                }
+            }
+        }
+
+        async function showLeaderboard() {
+            // --- 修正點 2: 確保所有非排行榜容器都被隱藏 ---
+            gameContainer.classList.add('hidden');
+            levelSelectionContainer.classList.add('hidden');
+            multiplayerLobby.classList.add('hidden');
+            gameRoomContainer.classList.add('hidden');
+            leaderboardContainer.classList.remove('hidden'); // 顯示排行榜
+
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+
+            leaderboardList.innerHTML = '<li>載入中...</li>';
+            try {
+                const snapshot = await db.collection('leaderboard').orderBy('score', 'desc').limit(10).get();
+                leaderboardList.innerHTML = '';
+                if (snapshot.empty) {
+                    leaderboardList.innerHTML = '<li>目前還沒有任何紀錄。</li>';
+                    return;
+                }
+                snapshot.forEach((doc, index) => {
+                    const data = doc.data();
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<span>${index + 1}. ${data.name}</span><span>${data.score} 分</span>`;
+                    leaderboardList.appendChild(listItem);
+                });
+                showMascotSpeech("看看誰是客語大師！", 2000, 'images/mascot_smile.png');
+
+            }
+            catch (e) {
+                console.error("載入排行榜失敗: ", e);
+                leaderboardList.innerHTML = '<li>載入排行榜失敗。</li>';
+            }
+        }
+
+        // --- 修正點 3: 將返回排行榜的邏輯統一呼叫 showModeSelection() ---
+        function returnFromLeaderboard() {
+            showModeSelection();
+        }
+
+        // --- 模式選擇與遊戲開始函數 ---
+
+        // 顯示模式選擇介面
+        function showModeSelection() {
+            console.log("進入 showModeSelection..."); // 除錯訊息
+
+            clearInterval(timerInterval); // 停止任何可能正在運行的計時器
+
+            // --- 修正點 4: 確保 Firebase 監聽器被取消 (特別是多人模式) ---
+            if (roomSnapshotListener) {
+                console.log("取消 Firebase 房間監聽器.");
+                roomSnapshotListener(); // 取消舊的監聽
+                roomSnapshotListener = null;
+            }
+
+            // --- 修正點 5: 確保所有容器的顯示/隱藏狀態正確設定 ---
+            levelSelectionContainer.classList.remove('hidden'); // 顯示首頁 (模式選擇)
+
+            gameContainer.classList.add('hidden');
+            leaderboardContainer.classList.add('hidden');
+            multiplayerLobby.classList.add('hidden');
+            gameRoomContainer.classList.add('hidden');
+
+            // 隱藏所有遊戲結束/遊戲中可能出現的按鈕
+            nextButton.classList.add('hidden');
+            submitScoreButton.classList.add('hidden');
+            restartButton.classList.add('hidden');
+            showLeaderboardGameEndButton.classList.add('hidden');
+            if (returnToModeSelectionFromGameButton) { // 檢查元素是否存在，因為它可能只在遊戲結束後才存在
+                returnToModeSelectionFromGameButton.classList.add('hidden');
+            }
+
+
+            // 重置遊戲介面中的計分板、計時器等元素
+            score = 0; // 重置分數
+            currentQuestionIndex = 0; // 重置題目索引
+            comboStreak = 0; // 重置連擊數
+            scoreDisplay.textContent = '0';
+            totalQuestionsDisplay.textContent = NUM_QUESTIONS_PER_GAME; // 重置總題數顯示
+            timerDisplay.textContent = TIME_PER_QUESTION; // 重置計時器顯示
+            timerArea.classList.add('hidden'); // 隱藏計時器
+            timerArea.classList.remove('time-low'); // 移除計時器警告樣式
+            questionText.textContent = ''; // 清空題目顯示
+            optionsContainer.innerHTML = ''; // 清空選項
+            fillInContainer.classList.add('hidden'); // 隱藏填空
+            fillInInput.value = ''; // 清空填空輸入框
+            feedbackText.textContent = ''; // 清空回饋文字
+            questionImage.classList.add('hidden'); // 隱藏圖片題目
+            questionImage.src = '';
+
+            comboStreakDisplay.classList.add('hidden'); // 隱藏連擊提示
+
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0; // 重置音樂到開頭
+
+            showMascotSpeech("歡迎回來！選擇你想玩的模式吧！", 2000, 'images/mascot_neutral.png');
+
+            // --- 修正點 6: 動態修改 levelSelectionContainer 的內容時，確保返回按鈕事件重新綁定 ---
+            // 因為 showLevelSelectionForSinglePlayer 會改變 levelSelectionContainer 的內容，
+            // 這裡需要確保首頁的按鈕事件是綁定在最原始的 HTML 結構上
+            // 或者，如果每次都動態生成首頁內容，就需要在這裡重新綁定 mode-button 和 show-leaderboard-initial
+            // 為了簡化，讓 showLevelSelectionForSinglePlayer 專門處理它的介面，
+            // showModeSelection 負責回到最初始的首頁狀態。
+            // 因此，這裡不應該有 `levelSelectionContainer.innerHTML = ...` 的操作，
+            // 而是讓 HTML 預設結構就是首頁，然後動態切換到難度選擇頁時再修改內容。
+            // (這在您原來的 HTML 結構中是這樣處理的，即 `levelSelectionContainer` 是首頁的根容器)
+            // 所以這裡不需要額外操作 `levelSelectionContainer.innerHTML`
+        }
+
+        // 顯示難度選擇介面 (單人模式)
+        function showLevelSelectionForSinglePlayer() {
+            levelSelectionContainer.classList.remove('hidden'); // 確保難度選擇容器是可見的
+            gameContainer.classList.add('hidden');
+            multiplayerLobby.classList.add('hidden');
+            gameRoomContainer.classList.add('hidden');
+            leaderboardContainer.classList.add('hidden');
+
+            // 動態修改 levelSelectionContainer 的內容為難度選擇按鈕
+            levelSelectionContainer.innerHTML = `
+                <h1>客語認證考題對對碰</h1>
+                <h2>請選擇挑戰難度：</h2>
+                <button class="level-button" data-level="easy">初級</button>
+                <button class="level-button" data-level="medium">中級</button>
+                <button class="level-button" data-level="hard">高級</button>
+                <button id="returnToModeSelectionFromLevels" class="btn return-btn">返回模式選擇</button>
+            `;
+            // --- 修正點 7: 動態生成按鈕後，必須重新綁定事件監聽器 ---
+            document.querySelectorAll('.level-button').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const level = event.target.dataset.level;
+                    startGame(level); // 呼叫單人模式開始遊戲
+                });
+            });
+            // 綁定「從難度選擇返回模式選擇」的按鈕
+            const returnToModeSelectionFromLevelsBtn = document.getElementById('returnToModeSelectionFromLevels');
+            if (returnToModeSelectionFromLevelsBtn) {
+                returnToModeSelectionFromLevelsBtn.addEventListener('click', showModeSelection);
+            }
+            showMascotSpeech("準備好了嗎？挑個難度開始吧！", 2000, 'images/mascot_smile.png');
+        }
+
+        // 單人模式開始遊戲
+        function startGame(level) {
+            currentMode = 'single'; // 設定為單人模式
+            selectedLevel = level;
+            score = 0;
+            currentQuestionIndex = 0;
+            currentQuestions = getRandomQuestions(NUM_QUESTIONS_PER_GAME, selectedLevel);
+            totalQuestionsDisplay.textContent = currentQuestions.length;
+            scoreDisplay.textContent = score;
+
+            levelSelectionContainer.classList.add('hidden'); // 隱藏難度選擇
+            gameContainer.classList.remove('hidden'); // 顯示遊戲介面
+            leaderboardContainer.classList.add('hidden');
+            multiplayerLobby.classList.add('hidden');
+            gameRoomContainer.classList.add('hidden');
+
+            nextButton.classList.add('hidden');
+            submitScoreButton.classList.add('hidden');
+            restartButton.classList.add('hidden');
+            showLeaderboardGameEndButton.classList.add('hidden');
+            returnToModeSelectionFromGameButton.classList.remove('hidden'); // 遊戲中顯示返回按鈕
+            timerArea.classList.remove('hidden');
+            timerArea.classList.remove('time-low');
+
+            loadQuestionSinglePlayer();
+        }
+
+
+        // 多人對戰相關邏輯
+        function generatePlayerId() {
+            return 'player_' + Date.now() + Math.random().toString(36).substring(2, 9);
+        }
+
+        // 顯示多人對戰大廳
+        async function showMultiplayerLobby() {
+            currentMode = 'multi';
+            clearInterval(timerInterval);
+            // --- 修正點 8: 確保 Firebase 監聽器在進入大廳時被清理 ---
+            if (roomSnapshotListener) {
+                roomSnapshotListener();
+                roomSnapshotListener = null;
+            }
+
+            levelSelectionContainer.classList.add('hidden');
+            gameContainer.classList.add('hidden');
+            leaderboardContainer.classList.add('hidden');
+            multiplayerLobby.classList.remove('hidden'); // 顯示大廳
+            gameRoomContainer.classList.add('hidden');
+
+            myPlayerId = generatePlayerId();
+            playerNameInput.value = localStorage.getItem('playerName') || '玩家' + Math.floor(Math.random() * 1000);
+            myPlayerName = playerNameInput.value;
+            localStorage.setItem('playerName', myPlayerName);
+
+            showMascotSpeech("歡迎來到對戰大廳！", 2000, 'images/mascot_neutral.png');
+            await updateAvailableRooms();
+        }
+
+        // 更新可用房間列表
+        async function updateAvailableRooms() {
+            availableRoomsList.innerHTML = '<li style="text-align: center; color: #888;">載入房間中...</li>';
+            try {
+                const snapshot = await db.collection('rooms').where('status', '==', 'waiting').get();
+                availableRoomsList.innerHTML = '';
+                if (snapshot.empty) {
+                    availableRoomsList.innerHTML = '<li style="text-align: center; color: #888;">目前沒有開放中的房間，快來創建一個吧！</li>';
+                    return;
+                }
+                snapshot.forEach(doc => {
+                    const room = doc.data();
+                    const hostName = room.players[room.hostId]?.name || '未知玩家';
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <span>房間 ID: ${doc.id.substring(0, 6)} - 主機: ${hostName} (${Object.keys(room.players).length}/2)</span>
+                        <button data-room-id="${doc.id}">加入</button>
+                    `;
+                    listItem.querySelector('button').addEventListener('click', () => joinRoom(doc.id));
+                    availableRoomsList.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error("更新房間列表失敗:", error);
+                alert("更新房間列表失敗，請稍後再試。");
+            }
+        }
+
+        // 創建房間
+        async function createRoom() {
+            myPlayerName = playerNameInput.value.trim() || '玩家';
+            if (myPlayerName.length < 2) {
+                alert("請輸入至少兩個字元的玩家名稱。");
+                return;
+            }
+            localStorage.setItem('playerName', myPlayerName);
+
+            try {
+                const newRoomRef = await db.collection('rooms').add({
+                    status: 'waiting',
+                    hostId: myPlayerId,
+                    players: {
+                        [myPlayerId]: {
+                            name: myPlayerName,
+                            score: 0,
+                            ready: false,
+                            lastAnswerTime: null, // 新增用於多人模式判斷答題時間
+                            submittedAnswer: null // 新增用於多人模式儲存答案
+                        }
+                    },
+                    currentQuestion: null,
+                    questionIndex: 0,
+                    roundEndTime: null,
+                    winnerId: null,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                currentRoomId = newRoomRef.id;
+                await enterGameRoom(currentRoomId);
+                showMascotSpeech(`房間創建成功！等待對手加入。`, 2500, 'images/mascot_smile.png');
+                alert(`房間創建成功！房間 ID: ${currentRoomId.substring(0, 6)}`);
+            } catch (error) {
+                console.error("創建房間失敗:", error);
+                alert("創建房間失敗，請稍後再試。");
+            }
+        }
+
+        // 加入房間
+        async function joinRoom(roomId = null) {
+            if (!roomId) {
+                roomId = prompt('請輸入房間 ID (前6位字元即可):');
+                if (!roomId) return;
+                const shortId = roomId.toLowerCase();
+                try {
+                    const snapshot = await db.collection('rooms').get();
+                    let fullRoomId = null;
+                    snapshot.forEach(doc => {
+                        if (doc.id.toLowerCase().startsWith(shortId)) {
+                            fullRoomId = doc.id;
+                        }
+                    });
+                    if (fullRoomId) {
+                        roomId = fullRoomId;
+                    } else {
+                        alert('房間不存在或輸入錯誤。');
+                        return;
+                    }
+                } catch (error) {
+                    console.error("搜尋房間失敗:", error);
+                    alert("搜尋房間失敗，請稍後再試。");
+                    return;
+                }
+            }
+            myPlayerName = playerNameInput.value.trim() || '玩家';
+            if (myPlayerName.length < 2) {
+                alert("請輸入至少兩個字元的玩家名稱。");
+                return;
+            }
+            localStorage.setItem('playerName', myPlayerName);
+
+            try {
+                const roomRef = db.collection('rooms').doc(roomId);
+                const roomDoc = await roomRef.get();
+
+                if (!roomDoc.exists) {
+                    alert('房間不存在或已結束。');
+                    return;
+                }
+
+                const roomData = roomDoc.data();
+                if (roomData.status !== 'waiting') {
+                    alert('該房間已開始遊戲或已結束。');
+                    return;
+                }
+
+                if (Object.keys(roomData.players).length >= 2) {
+                    alert('該房間已滿。');
+                    return;
+                }
+
+                await roomRef.update({
+                    [`players.${myPlayerId}`]: {
+                        name: myPlayerName,
+                        score: 0,
+                        ready: false,
+                        lastAnswerTime: null,
+                        submittedAnswer: null
+                    },
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                currentRoomId = roomId;
+                await enterGameRoom(currentRoomId);
+                showMascotSpeech(`成功加入房間！`, 2000, 'images/mascot_smile.png');
+            } catch (error) {
+                console.error("加入房間失敗:", error);
+                alert("加入房間失敗，請稍後再試。");
+            }
+        }
+
+        // 進入遊戲房間介面並監聽狀態
+        async function enterGameRoom(roomId) {
+            multiplayerLobby.classList.add('hidden');
+            gameContainer.classList.add('hidden');
+            gameRoomContainer.classList.remove('hidden'); // 顯示遊戲房間
+
+            currentRoomIdDisplay.textContent = roomId.substring(0, 6);
+            myPlayerNameDisplay.textContent = myPlayerName;
+            myPlayerScoreDisplay.textContent = 0;
+            opponentPlayerScoreDisplay.textContent = 0;
+
+            // --- 修正點 9: 進入新房間前，取消任何舊的監聽器 ---
+            if (roomSnapshotListener) {
+                roomSnapshotListener(); // 取消舊的監聽
+            }
+            roomSnapshotListener = db.collection('rooms').doc(roomId).onSnapshot(docSnapshot => {
+                if (!docSnapshot.exists) {
+                    alert('房間已解散。');
+                    showMultiplayerLobby(); // 返回大廳
+                    return;
+                }
+
+                const room = docSnapshot.data();
+                const players = room.players || {};
+                let opponentId = null;
+                for (const id in players) {
+                    if (id !== myPlayerId) {
+                        opponentId = id;
+                        break;
+                    }
+                }
+                opponentPlayerId = opponentId;
+
+                if (opponentId) {
+                    opponentPlayerNameDisplay.textContent = players[opponentId]?.name || '對手';
+                    opponentPlayerScoreDisplay.textContent = players[opponentId]?.score || 0;
+                } else {
+                    opponentPlayerNameDisplay.textContent = '等待中...';
+                    opponentPlayerScoreDisplay.textContent = 0;
+                }
+                myPlayerScoreDisplay.textContent = players[myPlayerId]?.score || 0;
+
+
+                if (room.status === 'waiting') {
+                    roomStatusMessage.textContent = `等待其他玩家加入... (房間人數: ${Object.keys(players).length}/2)`;
+                    startGameInRoomBtn.classList.add('hidden');
+                    if (room.hostId === myPlayerId && Object.keys(players).length === 2) {
+                        startGameInRoomBtn.classList.remove('hidden');
+                    }
+                    leaveRoomBtn.classList.remove('hidden');
+                    optionsContainer.classList.add('hidden');
+                    fillInContainer.classList.add('hidden');
+                    questionText.textContent = '';
+                    feedbackText.textContent = '';
+                    timerArea.classList.add('hidden');
+
+                } else if (room.status === 'playing') {
+                    gameRoomContainer.classList.add('hidden'); // 遊戲開始，隱藏房間介面
+                    gameContainer.classList.remove('hidden'); // 顯示遊戲進行介面
+                    startGameInRoomBtn.classList.add('hidden');
+                    leaveRoomBtn.classList.remove('hidden');
+                    returnToModeSelectionFromGameButton.classList.add('hidden'); // 遊戲中不顯示這個按鈕
+                    timerArea.classList.remove('hidden');
+
+                    const currentQData = room.currentQuestion; // 取得當前題目數據
+                    const roundEndTime = room.roundEndTime?.toDate();
+                    const now = new Date();
+                    timeLeft = Math.max(0, Math.floor((roundEndTime - now) / 1000));
+
+                    // 如果題目更新了，才重新載入題目
+                    if (currentQData && questionText.dataset.questionId !== currentQData.questionId) {
+                        questionText.dataset.questionId = currentQData.questionId;
+                        currentQuestionIndex = room.questionIndex;
+                        loadQuestionMultiplayer(currentQData); // 使用 currentQData 載入題目
+                        showMascotSpeech("新的對戰題目來了！", 1500, 'images/mascot_neutral.png');
+                        // 重置 feedbackText 和按鈕狀態
+                        feedbackText.textContent = '';
+                        enableControls();
+                    } else if (!currentQData) {
+                        questionText.textContent = '等待遊戲開始...'; // 剛進入 playing 狀態，但題目還沒同步
+                    }
+                    updateTimerDisplayMultiplayer();
+
+                    // 如果本地玩家已經提交了答案，則禁用控制項並顯示等待資訊
+                    if (players[myPlayerId]?.submittedAnswer !== null) {
+                        disableControls();
+                        feedbackText.textContent = "您已提交答案，等待其他玩家...";
+                    }
+
+                } else if (room.status === 'ended') {
+                    clearInterval(timerInterval);
+                    gameRoomContainer.classList.add('hidden');
+                    gameContainer.classList.remove('hidden'); // 顯示遊戲結束介面
+                    timerArea.classList.add('hidden');
+                    backgroundMusic.pause();
+                    backgroundMusic.currentTime = 0;
+
+                    const finalScores = room.players;
+                    let finalMessage = '遊戲結束！\n';
+                    if (room.winnerId) {
+                        finalMessage += `獲勝者是：${finalScores[room.winnerId]?.name}！\n`;
+                        showMascotSpeech("恭喜獲勝！", 3000, 'images/mascot_happy.png');
+                    } else {
+                        finalMessage += '遊戲平手！\n';
+                        showMascotSpeech("旗鼓相當，平手了！", 3000, 'images/mascot_smile.png');
+                    }
+                    finalMessage += '最終分數：\n';
+                    for (const pId in finalScores) {
+                        finalMessage += `${finalScores[pId].name}: ${finalScores[pId].score} 分\n`;
+                    }
+
+                    questionText.innerHTML = finalMessage.replace(/\n/g, '<br>');
+                    optionsContainer.innerHTML = '';
+                    fillInContainer.classList.add('hidden');
+                    feedbackText.textContent = '';
+                    nextButton.classList.add('hidden');
+                    startGameInRoomBtn.classList.add('hidden');
+                    submitScoreButton.classList.add('hidden');
+                    restartButton.classList.add('hidden');
+                    showLeaderboardGameEndButton.classList.add('hidden');
+                    leaveRoomBtn.classList.add('hidden');
+                    returnToModeSelectionFromGameButton.classList.remove('hidden'); // 遊戲結束時顯示返回按鈕
+                    returnToModeSelectionFromGameButton.textContent = '返回模式選擇'; // 確保文字正確
+                }
+            }, error => {
+                console.error("監聽房間狀態失敗:", error);
+                alert("房間連線斷開，請嘗試重新加入或返回大廳。");
+                showMultiplayerLobby(); // 連線失敗，返回大廳
+            });
+        }
+
+        // 離開房間
+        async function leaveRoom() {
+            if (!currentRoomId) {
+                showModeSelection(); // 如果沒有房間ID，直接返回模式選擇
+                return;
+            }
+
+            clearInterval(timerInterval);
+            if (roomSnapshotListener) {
+                roomSnapshotListener(); // 取消監聽
+            }
+
+            try {
+                const roomRef = db.collection('rooms').doc(currentRoomId);
+                const roomDoc = await roomRef.get();
+                if (roomDoc.exists) {
+                    const roomData = roomDoc.data();
+                    if (Object.keys(roomData.players).length === 1 && roomData.players[myPlayerId]) {
+                        // 如果我是最後一個玩家，則刪除房間
+                        await roomRef.delete();
+                        console.log(`房間 ${currentRoomId} 已刪除。`);
+                    } else if (roomData.players[myPlayerId]) {
+                        // 如果不是最後一個玩家，只移除自己
+                        const updates = {};
+                        updates[`players.${myPlayerId}`] = firebase.firestore.FieldValue.delete();
+                        // 如果我是房主，且還有其他玩家，則將房主轉移給另一個玩家
+                        if (roomData.hostId === myPlayerId && Object.keys(roomData.players).length > 1) {
+                            const remainingPlayers = Object.keys(roomData.players).filter(id => id !== myPlayerId);
+                            if (remainingPlayers.length > 0) {
+                                updates.hostId = remainingPlayers[0];
+                                updates.status = 'waiting'; // 房間回到等待狀態
+                                updates.currentQuestion = null;
+                                updates.questionIndex = 0;
+                                // 清空所有玩家的答題狀態，準備新遊戲
+                                for (const pId in roomData.players) {
+                                    if (pId !== myPlayerId) { // 不包含自己，因為自己要離開了
+                                        updates[`players.${pId}.submittedAnswer`] = null;
+                                        updates[`players.${pId}.lastAnswerTime`] = null;
+                                        updates[`players.${pId}.ready`] = false; // 重置準備狀態
+                                    }
+                                }
+                            }
+                        }
+                        await roomRef.update(updates);
+                        console.log(`玩家 ${myPlayerName} 已離開房間 ${currentRoomId}。`);
+                    }
+                }
+            } catch (error) {
+                console.error("離開房間失敗:", error);
+                alert("離開房間失敗，請稍後再試。");
+            } finally {
+                currentRoomId = null;
+                opponentPlayerId = null;
+                showMascotSpeech("已離開房間。", 1500, 'images/mascot_sad.png');
+                showMultiplayerLobby(); // 返回大廳，從大廳再返回模式選擇
+            }
+        }
+
+        // 多人模式下開始遊戲 (僅限房主)
+        async function startGameInRoom() {
+            if (!currentRoomId) return;
+
+            try {
+                const roomRef = db.collection('rooms').doc(currentRoomId);
+                const roomDoc = await roomRef.get();
+                const roomData = roomDoc.data();
+
+                if (roomData.hostId !== myPlayerId) {
+                    alert('只有房主才能開始遊戲！');
+                    return;
+                }
+                if (Object.keys(roomData.players).length < 2) {
+                    alert('至少需要兩位玩家才能開始遊戲！');
+                    return;
+                }
+
+                // 隨機選取中級題目，並為每個題目生成一個唯一的 ID
+                const questionsForGame = getRandomQuestions(NUM_QUESTIONS_PER_GAME, 'medium');
+                const questionsWithIds = questionsForGame.map((q, idx) => ({ ...q, questionId: `q_${idx}_${Date.now()}` }));
+
+                const gameQuestionsMap = {};
+                questionsWithIds.forEach((q, index) => {
+                    gameQuestionsMap[q.questionId] = { // 使用 questionId 作為鍵
+                        question: q.question,
+                        options: q.options || [],
+                        type: q.type,
+                        image: q.image || null,
+                        correctAnswer: q.answer
+                    };
+                });
+
+                const firstQuestion = questionsWithIds[0];
+                const now = new Date();
+                await roomRef.update({
+                    status: 'playing',
+                    questions: gameQuestionsMap,
+                    currentQuestion: {
+                        questionId: firstQuestion.questionId,
+                        question: firstQuestion.question,
+                        options: firstQuestion.options || [],
+                        type: firstQuestion.type,
+                        image: firstQuestion.image || null,
+                    },
+                    questionIndex: 0,
+                    roundEndTime: firebase.firestore.Timestamp.fromMillis(now.getTime() + TIME_PER_QUESTION * 1000),
+                    winnerId: null,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    // 重置所有玩家的答題狀態，準備新遊戲
+                    'players': Object.keys(roomData.players).reduce((acc, playerId) => {
+                        acc[playerId] = { ...roomData.players[playerId], score: 0, submittedAnswer: null, lastAnswerTime: null, ready: false };
+                        return acc;
+                    }, {})
+                });
+
+                gameRoomContainer.classList.add('hidden');
+                gameContainer.classList.remove('hidden');
+                timerArea.classList.remove('hidden');
+                backgroundMusic.play().catch(e => console.log("背景音樂播放失敗:", e));
+                showMascotSpeech("遊戲開始！祝您好運！", 2000, 'images/mascot_happy.png');
+
+
+            } catch (error) {
+                console.error("啟動多人遊戲失敗:", error);
+                alert("啟動遊戲失敗，請稍後再試。");
+            }
+        }
+
+
+        // 多人模式下的載入題目
+        function loadQuestionMultiplayer(q) {
+            optionsContainer.innerHTML = '';
+            fillInContainer.classList.add('hidden');
+            fillInInput.value = '';
+            feedbackText.textContent = '';
+            questionImage.classList.add('hidden'); // 隱藏圖片
+            questionImage.src = ''; // 清空圖片源
+            timerArea.classList.remove('hidden');
+            timerArea.classList.remove('time-low');
+
+            questionText.textContent = q.question;
+
+            if (q.image) { // 如果是圖片題
+                questionImage.src = q.image;
+                questionImage.classList.remove('hidden');
+            }
+
+            if (q.type === 'multiple-choice' || q.type === 'image-choice') {
+                optionsContainer.classList.remove('hidden');
+                optionsContainer.style.display = 'grid';
+                q.options.forEach((option, index) => {
+                    const button = document.createElement('button');
+                    button.classList.add('option-button');
+                    button.textContent = option;
+                    button.dataset.index = index;
+                    button.addEventListener('click', () => submitAnswerMultiplayer(index, q.type));
+                    optionsContainer.appendChild(button);
+                });
+            } else if (q.type === 'fill-in-the-blank' || q.type === 'description-fill-in') {
+                optionsContainer.classList.add('hidden');
+                fillInContainer.classList.remove('hidden');
+                fillInInput.focus();
+                fillInInput.onkeydown = (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        submitAnswerMultiplayer(fillInInput.value.trim(), q.type);
+                    }
+                };
+                fillInSubmitButton.onclick = () => submitAnswerMultiplayer(fillInInput.value.trim(), q.type);
+            }
+
+            enableControls();
+            comboStreakDisplay.classList.add('hidden');
+        }
+
+        // 更新計時器顯示 (多人模式) - 會由 Firebase 監聽觸發
+        function updateTimerDisplayMultiplayer() {
+            // 這個函數被 firestore onSnapshot 調用時，timeLeft 已經根據 room.roundEndTime 設置
+            timerDisplay.textContent = timeLeft;
+            if (timeLeft <= WARNING_TIME) {
+                timerArea.classList.add('time-low');
+            } else {
+                timerArea.classList.remove('time-low');
+            }
+        }
+
+
+        // 多人模式下提交答案
+        async function submitAnswerMultiplayer(answer, questionType) {
+            if (!currentRoomId || !myPlayerId) return;
+
+            clearInterval(timerInterval); // 提交答案後立即停止本地計時器
+            disableControls();
+
+            try {
+                const roomRef = db.collection('rooms').doc(currentRoomId);
+                const roomDoc = await roomRef.get();
+                const roomData = roomDoc.data();
+
+                if (!roomData || roomData.status !== 'playing' || roomData.questionIndex !== currentQuestionIndex) {
+                    console.warn("不是當前題目或遊戲狀態不對，不提交答案。");
+                    feedbackText.textContent = "題目已更新或遊戲狀態不正確。";
+                    return;
+                }
+
+                if (roomData.players[myPlayerId]?.submittedAnswer !== null) {
+                    feedbackText.textContent = "您已提交過此題答案。";
+                    return;
+                }
+
+                // 獲取正確答案以進行本地回饋（實際判斷建議在 Cloud Function）
+                const currentQuestionId = roomData.currentQuestion.questionId;
+                const currentQuestionDetails = roomData.questions[currentQuestionId];
+                let isCorrectLocal = false;
+                let actualCorrectAnswer = '';
+
+                if (currentQuestionDetails) {
+                    actualCorrectAnswer = currentQuestionDetails.correctAnswer;
+                    if (questionType === 'multiple-choice' || questionType === 'image-choice') {
+                        isCorrectLocal = (answer === currentQuestionDetails.correctAnswer);
+                    } else if (questionType === 'fill-in-the-blank' || questionType === 'description-fill-in') {
+                        const normalizedSubmitted = String(answer).toLowerCase().replace(/[^\u4e00-\u9fa5a-z0-9]/g, '');
+                        const normalizedCorrect = String(currentQuestionDetails.correctAnswer).toLowerCase().replace(/[^\u4e00-\u9fa5a-z0-9]/g, '');
+                        isCorrectLocal = (normalizedSubmitted === normalizedCorrect);
+                    }
+                }
+
+                await roomRef.update({
+                    [`players.${myPlayerId}.lastAnswerTime`]: firebase.firestore.FieldValue.serverTimestamp(),
+                    [`players.${myPlayerId}.submittedAnswer`]: answer,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                if (isCorrectLocal) {
+                    // 本地回饋（分數增加將由 Cloud Function 處理）
+                    feedbackText.textContent = "答對了！答案已提交，等待對手...";
+                    playSound(correctSound);
+                    showMascotSpeech("好棒！", 1500, 'images/mascot_happy.png');
+                } else {
+                    feedbackText.textContent = `答錯了。答案已提交，等待對手... (正確答案: ${actualCorrectAnswer})`;
+                    playSound(wrongSound);
+                    showMascotSpeech("嗯...再想想。", 1500, 'images/mascot_sad.png');
+                }
+                comboStreakDisplay.classList.add('hidden');
+
+                // **重要提示：**
+                // 真正的分數更新和遊戲流程推進（如下一題、遊戲結束判斷），
+                // 應透過 **Firebase Cloud Functions** 來處理。
+                // 這裡的邏輯只用於前端的即時回饋和等待狀態。
+                // Cloud Function 會監聽 room document 的更新，當所有玩家都提交答案，或時間到時，
+                // 再由 Cloud Function 負責更新玩家分數，清空 lastAnswerTime/submittedAnswer，
+                // 並推進 currentQuestionIndex 和 roundEndTime，或將 status 改為 'ended'。
+
+            } catch (error) {
+                console.error("提交答案失敗:", error);
+                feedbackText.textContent = "答案提交失敗，請重試。";
+            }
+        }
+
+
+        // --- 事件監聽 ---
+        showLeaderboardInitialButton.addEventListener('click', showLeaderboard);
+        showLeaderboardGameEndButton.addEventListener('click', showLeaderboard);
+        returnFromLeaderboardButton.addEventListener('click', returnFromLeaderboard);
+        nextButton.addEventListener('click', nextQuestion);
+        submitScoreButton.addEventListener('click', submitScore);
+        // --- 修正點 10: 確保重新開始按鈕返回模式選擇，而非直接重新遊戲 ---
+        restartButton.addEventListener('click', () => {
+            showModeSelection(); // 返回首頁
+        });
+
+        // 監聽模式選擇按鈕 (在首頁)
+        levelSelectionContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('mode-button')) {
+                const mode = event.target.dataset.mode;
+                currentMode = mode;
+                if (mode === 'single') {
+                    showLevelSelectionForSinglePlayer();
+                } else { // 'multi'
+                    showMultiplayerLobby();
+                }
+            } else if (event.target.id === 'show-leaderboard-initial') {
+                showLeaderboard();
+            }
+        });
+
+        createRoomBtn.addEventListener('click', createRoom);
+        joinRoomBtn.addEventListener('click', () => joinRoom());
+        refreshRoomsBtn.addEventListener('click', updateAvailableRooms);
+        startGameInRoomBtn.addEventListener('click', startGameInRoom);
+        leaveRoomBtn.addEventListener('click', leaveRoom);
+        // --- 修正點 11: 統一返回模式選擇的按鈕事件 ---
+        returnToModeSelectionFromLobbyBtn.addEventListener('click', showModeSelection);
+        if (returnToModeSelectionFromGameButton) { // 檢查元素是否存在再綁定
+            returnToModeSelectionFromGameButton.addEventListener('click', () => {
+                showModeSelection();
+            });
+        }
+
+
+        // 初始狀態：顯示模式選擇介面
+        showModeSelection();
+    </script>
+</body>
+</html>
