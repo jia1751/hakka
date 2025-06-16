@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>客語認證考題對對碰 - 精緻版</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK (Compatibility versions for global access) -->
+    <!-- 使用相容性版本以支援 firebase.initializeApp() 和 firebase.firestore() 語法 -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <style>
         /* 全局字體設定，確保所有文字使用 Noto Sans TC */
         body {
@@ -16,11 +21,8 @@
             min-height: 100vh;
             margin: 0;
             color: #333;
-            overflow: hidden; /* 防止滾動條出現 */
             position: relative;
             animation: backgroundFadeIn 1.5s ease-out forwards; /* 背景載入動畫 */
-            /* 游標設定，假設您有 images/cursor_normal.png 檔案 */
-            /* cursor: url('images/cursor_normal.png'), auto; */
         }
 
         @keyframes backgroundFadeIn {
@@ -76,6 +78,9 @@
             animation: fadeInScale 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* 載入動畫 */
             box-sizing: border-box;
             opacity: 0; /* 預設隱藏，由動畫顯示 */
+            /* 確保內容可以滾動 */
+            overflow-y: auto; 
+            max-height: 95vh; /* 限制卡片最大高度，讓其內容可滾動 */
         }
 
         @keyframes fadeInScale {
@@ -388,6 +393,35 @@
             font-size: 3.2em; /* 增大字體 */
             margin-bottom: 30px;
         }
+        
+        /* 排行榜難度切換按鈕組 */
+        .leaderboard-difficulty-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+        .leaderboard-difficulty-tabs button {
+            background-color: #a8dadc;
+            color: #1d3557;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .leaderboard-difficulty-tabs button.active {
+            background-color: #457b9d;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        .leaderboard-difficulty-tabs button:hover:not(.active) {
+            background-color: #80c7f2;
+            transform: translateY(-2px);
+        }
 
         .leaderboard-list {
             list-style: none;
@@ -412,11 +446,21 @@
         }
 
         @keyframes slideInLeft {
-            from { transform: translateX(-50px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            0% { transform: translateX(-50px); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateX(0); opacity: 1; }
         }
-        .leaderboard-list li:nth-child(even) { animation-delay: 0.1s; }
-        .leaderboard-list li:nth-child(odd) { animation-delay: 0.2s; }
+        /* 給列表項添加延遲，使它們依次出現 */
+        .leaderboard-list li:nth-child(1) { animation-delay: 0.1s; }
+        .leaderboard-list li:nth-child(2) { animation-delay: 0.2s; }
+        .leaderboard-list li:nth-child(3) { animation-delay: 0.3s; }
+        .leaderboard-list li:nth-child(4) { animation-delay: 0.4s; }
+        .leaderboard-list li:nth-child(5) { animation-delay: 0.5s; }
+        .leaderboard-list li:nth-child(6) { animation-delay: 0.6s; }
+        .leaderboard-list li:nth-child(7) { animation-delay: 0.7s; }
+        .leaderboard-list li:nth-child(8) { animation-delay: 0.8s; }
+        .leaderboard-list li:nth-child(9) { animation-delay: 0.9s; }
+        .leaderboard-list li:nth-child(10) { animation-delay: 1.0s; }
 
 
         .leaderboard-list li:first-child {
@@ -529,6 +573,43 @@
             background: linear-gradient(45deg, #1976d2, #42a5f5); /* hover 時顏色反向 */
             border-color: #2196f3;
         }
+
+        /* 難度選擇下拉選單樣式 */
+        #difficultySelect {
+            width: 80%;
+            max-width: 300px;
+            padding: 15px 25px;
+            font-size: 1.8em;
+            border: 3px solid #007bff;
+            border-radius: 12px;
+            background-color: #e0f2f7;
+            color: #333;
+            appearance: none; /* 移除原生樣式 */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+            margin-bottom: 25px; /* 增加與按鈕的間距 */
+            text-align-last: center; /* 讓文字居中 */
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2069.9a17.7%2017.7%200%200%200-25.3%200L146.2%20185.3%2030.7%2069.9A17.7%2017.7%200%200%200%205.4%2095.2l120.5%20115.4c6.9%206.6%2017.8%206.6%2024.7%200L287%2095.2a17.7%2017.7%200%200%200%200-25.3z%22%2F%3E%3C%2Fsvg%3E'); /* 下拉箭頭 */
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 1.5em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #difficultySelect:hover {
+            border-color: #0056b3;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        #difficultySelect:focus {
+            outline: none;
+            border-color: #0056b3;
+            box-shadow: 0 0 0 4px rgba(0,123,255,0.25);
+        }
+
 
         /* 多人對戰大廳 */
         .multiplayer-lobby {
@@ -738,6 +819,7 @@
             .level-selection-container h1 { font-size: 4.5em; margin-bottom: 40px; }
             .level-selection-container h2 { font-size: 3em; margin-bottom: 30px; }
             .mode-button, .level-button { font-size: 2.2em; padding: 25px 50px; border-radius: 15px; max-width: 380px; }
+            #difficultySelect { font-size: 1.6em; padding: 12px 20px; max-width: 280px; }
             #playerNameInput { font-size: 1.4em; padding: 15px 20px; }
             #availableRoomsList li { font-size: 1.25em; padding: 18px 25px; border-radius: 12px; }
             #availableRoomsList li button { padding: 12px 20px; }
@@ -755,7 +837,7 @@
                 border-radius: 25px;
             }
             h1 { font-size: 3.5em; margin-bottom: 30px; }
-            h2 { font-size: 2em; margin-bottom: 20px; }
+            h2 { font-size: 2em; margin-bottom: 15px; }
             .header-info { flex-direction: column; gap: 15px; margin-bottom: 25px; }
             .score-area, .timer-area { width: 100%; max-width: 250px; font-size: 1.5em; padding: 8px 15px; }
             .question-area { padding: 25px; margin-bottom: 25px; min-height: 180px; }
@@ -773,8 +855,9 @@
             .level-selection-container { padding: 40px; border-radius: 30px; }
             .level-selection-container h1 { font-size: 3.5em; margin-bottom: 35px; }
             .level-selection-container h2 { font-size: 2.5em; margin-bottom: 30px; }
-            .mode-button, .level-button { font-size: 2em; padding: 20px 40px; border-radius: 12px; max-width: 350px; }
-            #playerNameInput { font-size: 1.2em; padding: 15px 20px; }
+            .mode-button, .level-button { font-size: 2em; padding: 25px 50px; border-radius: 15px; max-width: 350px; }
+            #difficultySelect { font-size: 1.4em; padding: 10px 15px; max-width: 250px; margin-bottom: 20px;}
+            #playerNameInput { font-size: 1.4em; padding: 15px 20px; }
             #availableRoomsList li { font-size: 1.1em; padding: 15px 20px; border-radius: 12px; }
             #availableRoomsList li button { padding: 10px 15px; }
             .game-room-container .players-info { font-size: 1.2em; gap: 10px; }
@@ -797,6 +880,7 @@
             .question-area { padding: 20px; margin-bottom: 20px; min-height: 150px; }
             #question-text { font-size: 1.6em; margin-bottom: 15px; min-height: 100px; }
             #question-image { max-height: 120px; }
+            .options-container { grid-template-columns: 1fr; gap: 10px; }
             .option-button { font-size: 1.1em; padding: 12px 15px; border-radius: 8px; }
             #fill-in-input { font-size: 1.3em; padding: 10px; border-radius: 8px; }
             #fill-in-submit-button { font-size: 1.1em; padding: 10px 20px; border-radius: 6px; }
@@ -809,6 +893,7 @@
             .level-selection-container h1 { font-size: 3em; margin-bottom: 30px; }
             .level-selection-container h2 { font-size: 2.2em; margin-bottom: 20px; }
             .mode-button, .level-button { font-size: 1.8em; padding: 18px 35px; border-radius: 10px; max-width: 300px; }
+            #difficultySelect { font-size: 1.2em; padding: 8px 12px; max-width: 200px; margin-bottom: 15px;}
             #playerNameInput { font-size: 1em; padding: 10px 15px; }
             #availableRoomsList li { font-size: 0.95em; padding: 12px 15px; border-radius: 8px; }
             #availableRoomsList li button { padding: 8px 12px; }
@@ -828,7 +913,7 @@
     <audio id="backgroundMusic" src="sounds/bg_music.mp3" loop preload="auto"></audio>
 
     <div class="mascot-area">
-        <img id="mascotImage" src="images/mascot_neutral.png" alt="客家小精靈">
+        <img id="mascotImage" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPJyZtdf4AIj0jMgdP1OOW3Wn3WfI_wC6lZw&s" alt="客家小精靈">
         <div id="mascotSpeechBubble" class="mascot-speech-bubble"></div>
     </div>
 
@@ -843,6 +928,11 @@
         </p>
         <div class="controls" style="margin-top: 0;">
             <button class="mode-button" data-mode="single">單人挑戰</button>
+            <select id="difficultySelect">
+                <option value="easy">簡單</option>
+                <option value="medium">中等</option>
+                <option value="hard">困難</option>
+            </select>
             <button class="mode-button" data-mode="multi">多人對戰</button>
             <button id="show-leaderboard-initial" class="btn leaderboard-btn">查看客語大師榜</button>
         </div>
@@ -856,71 +946,72 @@
 
         <div class="question-area">
             <div id="question-text"></div>
-            <img id="question-image" src="" alt="題目圖片" class="hidden">
-            <div class="options-container" id="optionsContainer">
+            <img id="question-image" class="hidden" alt="題目圖片">
+            <div id="options-container" class="options-container">
                 </div>
-            <div id="fillInContainer" class="fill-in-container hidden">
-                <input type="text" id="fill-in-input" placeholder="請輸入答案">
-                <button id="fill-in-submit-button" class="btn success-btn">提交答案</button>
-            </div>
+            <input type="text" id="fill-in-input" class="hidden" placeholder="請輸入客家字">
+            <button id="fill-in-submit-button" class="btn submit-btn hidden">提交答案</button>
         </div>
-
-        <div class="feedback-text" id="feedbackText"></div>
+        <div id="feedback-text" class="feedback-text"></div>
 
         <div class="controls">
-            <button id="nextButton" class="btn success-btn hidden">下一題</button>
-            <button id="restartButton" class="btn primary-btn hidden">重新開始</button>
-            <button id="submitScoreButton" class="btn submit-btn hidden">提交分數到排行榜</button>
-            <button id="showLeaderboardGameEndButton" class="btn leaderboard-btn hidden">查看總排行榜</button>
-            <button id="returnToModeSelectionFromGame" class="btn return-btn hidden">返回模式選擇</button>
+            <button id="nextQuestionBtn" class="btn success-btn hidden">下一題</button>
+            <button id="resetGameBtn" class="btn danger-btn hidden">重新開始</button>
+            <button id="showLeaderboardBtn" class="btn leaderboard-btn hidden">查看客語大師榜</button>
+            <button id="returnToHomeBtn" class="btn return-btn hidden">返回主選單</button>
         </div>
     </div>
 
-    <div class="main-card multiplayer-lobby hidden" id="multiplayerLobby">
-        <h1>多人對戰大廳</h1>
-        <p style="font-size: 1.4em; color: #666; margin-bottom: 30px;">
-            和你的朋友一起挑戰客語吧！
-        </p>
-        <div class="lobby-controls controls" style="margin-top: 0;">
-            <input type="text" id="playerNameInput" placeholder="輸入你的名字" value="玩家">
-            <button id="createRoomBtn" class="btn success-btn">創建房間</button>
-            <button id="joinRoomBtn" class="btn primary-btn">加入房間</button>
-            <button id="refreshRoomsBtn" class="btn leaderboard-btn">刷新房間列表</button>
-            <button id="returnToModeSelectionFromLobby" class="btn return-btn">返回模式選擇</button>
+    <div class="main-card leaderboard-container hidden" id="leaderboardContainer">
+        <h2>客語大師榜</h2>
+        <!-- 排行榜難度切換按鈕 -->
+        <div class="leaderboard-difficulty-tabs">
+            <button id="leaderboardBtnEasy" data-difficulty="easy" class="active">簡單</button>
+            <button id="leaderboardBtnMedium" data-difficulty="medium">中等</button>
+            <button id="leaderboardBtnHard" data-difficulty="hard">困難</button>
         </div>
+        <ul id="leaderboardList" class="leaderboard-list">
+            <!-- 排行榜分數將動態插入此處 -->
+        </ul>
+        <div class="controls">
+            <button id="returnFromLeaderboardBtn" class="btn return-btn">返回主選單</button>
+        </div>
+    </div>
+
+    <div class="main-card multiplayer-lobby hidden" id="multiplayerLobbyContainer">
+        <h2>多人對戰大廳</h2>
+        <div class="lobby-controls controls">
+            <input type="text" id="playerNameInput" placeholder="輸入你的暱稱">
+            <button id="createRoomBtn" class="btn primary-btn">建立新房間</button>
+            <button id="refreshRoomsBtn" class="btn success-btn">刷新房間列表</button>
+        </div>
+        <h3>可加入的房間：</h3>
         <div class="room-list-container">
-            <h3>可用房間列表：</h3>
             <ul id="availableRoomsList">
                 </ul>
+        </div>
+        <div class="controls">
+            <button id="returnFromLobbyBtn" class="btn return-btn">返回主選單</button>
         </div>
     </div>
 
     <div class="main-card game-room-container hidden" id="gameRoomContainer">
-        <h2>房間 ID: <span id="currentRoomId"></span></h2>
+        <h2>遊戲房間：<span id="roomNameDisplay"></span></h2>
         <div class="players-info">
-            <p>你的名字: <span id="myPlayerName"></span></p>
-            <p>對手名字: <span id="opponentPlayerName"></span></p>
-            <p>你的分數: <span id="myPlayerScore">0</span></p>
-            <p>對手分數: <span id="opponentPlayerScore">0</span></p>
+            <p>房主: <span id="hostPlayerName"></span></p>
+            <p>玩家: <span id="clientPlayerName"></span></p>
         </div>
-        <div id="room-status-message">等待其他玩家加入...</div>
-        <button id="startGameInRoomBtn" class="btn success-btn hidden">開始遊戲</button>
-        <button id="leaveRoomBtn" class="btn danger-btn hidden">離開房間</button>
-        </div>
-
-    <div class="main-card leaderboard-container hidden" id="leaderboardContainer">
-        <h2>🏅 客語大師榜 🏅</h2>
-        <ul id="leaderboardList" class="leaderboard-list">
-            </ul>
+        <p id="room-status-message">等待其他玩家加入...</p>
         <div class="controls">
-            <button id="returnFromLeaderboard" class="btn return-btn">返回</button>
+            <button id="startGameBtn" class="btn success-btn hidden">開始遊戲</button>
+            <button id="leaveRoomBtn" class="btn danger-btn">離開房間</button>
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script> <script>
-        // --- 您的 Firebase 配置資訊 ---
+    <script>
+        // Firebase 配置資訊
+        // **請務必將此處的 YOUR_FIREBASE_CONFIG 替換為你在 Firebase 專案中實際取得的設定資訊**
+        // 前往 Firebase Console -> Project settings -> General -> Your apps -> Firebase SDK snippet -> Config
         const firebaseConfig = {
             apiKey: "AIzaSyCVvM_kfmLy68NK-ILq63me50Gn6ROiWJ8",
             authDomain: "snake-8bc6a.firebaseapp.com",
@@ -932,1173 +1023,792 @@
             measurementId: "G-NJ34S53TSV"
         };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const analytics = firebase.analytics(); // 初始化 Analytics
-        const db = firebase.firestore();
+        // 初始化 Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(); // 取得 Firestore 實例
 
-        // --- 遊戲設定 ---
-        const NUM_QUESTIONS_PER_GAME = 10;
-        const TIME_PER_QUESTION = 30; // 每題秒數
-        const WARNING_TIME = 10; // 倒數警告時間
-
-        // --- DOM 元素 ---
-        const gameContainer = document.getElementById('gameContainer');
+        // HTML 元素選擇器
         const levelSelectionContainer = document.getElementById('levelSelectionContainer');
+        const gameContainer = document.getElementById('gameContainer');
         const leaderboardContainer = document.getElementById('leaderboardContainer');
-        const multiplayerLobby = document.getElementById('multiplayerLobby');
+        const multiplayerLobbyContainer = document.getElementById('multiplayerLobbyContainer');
         const gameRoomContainer = document.getElementById('gameRoomContainer');
+
+        const difficultySelect = document.getElementById('difficultySelect'); // 新增難度選擇下拉選單
 
         const scoreDisplay = document.getElementById('score');
         const totalQuestionsDisplay = document.getElementById('totalQuestions');
         const timerDisplay = document.getElementById('timer');
-        const timerArea = document.querySelector('.timer-area');
         const questionText = document.getElementById('question-text');
-        const questionImage = document.getElementById('question-image'); // 新增圖片元素
-        const optionsContainer = document.getElementById('optionsContainer');
-        const fillInContainer = document.getElementById('fillInContainer');
+        const questionImage = document.getElementById('question-image');
+        const optionsContainer = document.getElementById('options-container');
         const fillInInput = document.getElementById('fill-in-input');
         const fillInSubmitButton = document.getElementById('fill-in-submit-button');
-        const feedbackText = document.getElementById('feedbackText');
+        const feedbackText = document.getElementById('feedback-text');
+        const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+        const resetGameBtn = document.getElementById('resetGameBtn');
+        const showLeaderboardBtn = document.getElementById('showLeaderboardBtn');
+        const returnToHomeBtn = document.getElementById('returnToHomeBtn');
 
-        const nextButton = document.getElementById('nextButton');
-        const restartButton = document.getElementById('restartButton');
-        const submitScoreButton = document.getElementById('submitScoreButton');
-        const showLeaderboardInitialButton = document.getElementById('show-leaderboard-initial');
-        const showLeaderboardGameEndButton = document.getElementById('showLeaderboardGameEndButton');
-        const returnFromLeaderboardButton = document.getElementById('returnFromLeaderboard');
+        const showLeaderboardInitialBtn = document.getElementById('show-leaderboard-initial');
         const leaderboardList = document.getElementById('leaderboardList');
-        // --- 修正點 1: 確保返回模式選擇的按鈕 ID 存在且唯一 ---
-        const returnToModeSelectionFromGameButton = document.getElementById('returnToModeSelectionFromGame'); // 從遊戲結束返回
-        const returnToModeSelectionFromLevelsButton = document.getElementById('returnToModeSelectionFromLevels'); // 從難度選擇返回 (此元素是動態創建的，需要調整監聽方式)
+        const returnFromLeaderboardBtn = document.getElementById('returnFromLeaderboardBtn');
 
-
-        // 多人對戰相關 DOM 元素
-        const modeButtons = document.querySelectorAll('.mode-button'); // 原來的 modeButtons
+        // Multiplayer elements
         const playerNameInput = document.getElementById('playerNameInput');
         const createRoomBtn = document.getElementById('createRoomBtn');
-        const joinRoomBtn = document.getElementById('joinRoomBtn');
         const refreshRoomsBtn = document.getElementById('refreshRoomsBtn');
         const availableRoomsList = document.getElementById('availableRoomsList');
-        const returnToModeSelectionFromLobbyBtn = document.getElementById('returnToModeSelectionFromLobby'); // 從多人大廳返回
-
-        const currentRoomIdDisplay = document.getElementById('currentRoomId');
-        const myPlayerNameDisplay = document.getElementById('myPlayerName');
-        const opponentPlayerNameDisplay = document.getElementById('opponentPlayerName');
-        const myPlayerScoreDisplay = document.getElementById('myPlayerScore');
-        const opponentPlayerScoreDisplay = document.getElementById('opponentPlayerScore');
+        const returnFromLobbyBtn = document.getElementById('returnFromLobbyBtn');
+        const roomNameDisplay = document.getElementById('roomNameDisplay');
+        const hostPlayerName = document.getElementById('hostPlayerName');
+        const clientPlayerName = document.getElementById('clientPlayerName');
         const roomStatusMessage = document.getElementById('room-status-message');
-        const startGameInRoomBtn = document.getElementById('startGameInRoomBtn');
+        const startGameBtn = document.getElementById('startGameBtn');
         const leaveRoomBtn = document.getElementById('leaveRoomBtn');
 
-        // 音效元素
+        const mascotImage = document.getElementById('mascotImage');
+        const mascotSpeechBubble = document.getElementById('mascotSpeechBubble');
+        const comboStreakDisplay = document.getElementById('comboStreakDisplay');
+
+        // 音效
         const correctSound = document.getElementById('correctSound');
         const wrongSound = document.getElementById('wrongSound');
         const timeWarningSound = document.getElementById('timeWarningSound');
         const backgroundMusic = document.getElementById('backgroundMusic');
 
-        // 虛擬角色元素
-        const mascotImage = document.getElementById('mascotImage');
-        const mascotSpeechBubble = document.getElementById('mascotSpeechBubble');
-
-        // 連擊提示元素
-        const comboStreakDisplay = document.getElementById('comboStreakDisplay');
-
-
-        // --- 遊戲變數 ---
-        let score = 0;
+        // 遊戲狀態變數
+        let currentMode = ''; // 'single' or 'multi'
+        let currentLevel = 'easy'; // 預設難度為 'easy'
         let currentQuestionIndex = 0;
-        let currentQuestions = [];
-        let timerInterval;
-        let timeLeft = TIME_PER_QUESTION;
-        let selectedLevel = 'medium'; // 預設難度
+        let score = 0;
+        let timer;
+        let timeLeft = 30; // 每題秒數
+        let gameActive = false;
+        let questions = []; // 存放題目的陣列
+        let currentPlayerName = '匿名玩家'; // 預設玩家名稱
+        let currentRoomId = null; // 當前房間 ID
+        let seconds = 0; // 用於排行榜的時間追蹤
 
-        let comboStreak = 0; // 連擊數
+        let comboStreak = 0;
+        let mascotSpeechTimeout;
 
-        // 多人對戰相關變數
-        let currentMode = 'single'; // 'single' 或 'multi'
-        let currentRoomId = null;
-        let myPlayerId = null; // 每個玩家的唯一 ID
-        let myPlayerName = '玩家';
-        let opponentPlayerId = null;
-        let roomSnapshotListener = null; // 用於取消 Firestore 監聽
+        // 題目資料 (根據規劃書調整，提供客語詞彙和諺語的範例)
+        const allQuestions = {
+            // 調整 easy 和 medium 詞彙數量以確保至少有 10 題
+            easy: [ // 確保至少 10 題
+                { type: 'multiple-choice', question: '「食飽」是什麼意思？', options: ['吃飽', '吃慢點', '吃好', '好吃'], answer: '吃飽', pinyin: 'sii-bau' },
+                { type: 'multiple-choice', question: '「𠊎」是什麼意思？', options: ['你', '他', '我', '我們'], answer: '我', pinyin: 'ngai' },
+                { type: 'multiple-choice', question: '「恁好」是什麼意思？', options: ['很好', '不好', '謝謝', '對不起'], answer: '很好', pinyin: 'an ho' },
+                { type: 'multiple-choice', question: '「承蒙」是什麼意思？', options: ['謝謝', '再見', '你好', '不客氣'], answer: '謝謝', pinyin: 'sang mung' },
+                { type: 'multiple-choice', question: '「先生」是什麼意思？', options: ['老師', '醫生', '警察', '學生'], answer: '老師', pinyin: 'sien sang' },
+                { type: 'fill-in', question: '「吃飯」客語是「食___」。', answer: '飯', pinyin: 'sii fan' },
+                { type: 'fill-in', question: '「喝水」客語是「食___」。', answer: '水', pinyin: 'sii sui' },
+                { type: 'fill-in', question: '「睡覺」客語是「睏___」。', answer: '覺', pinyin: 'kun gau' },
+                { type: 'fill-in', question: '「學校」客語是「學___」。', answer: '堂', pinyin: 'hok tong' },
+                { type: 'fill-in', question: '「市場」客語是「菜___」。', answer: '市', pinyin: 'coi si' },
+                { type: 'image-guess', image: 'https://placehold.co/150x150/aabbcc/ffffff?text=Apple', question: '圖片中的水果客語是「蘋果」，請問其漢語是？', options: ['李子', '蘋果', '香蕉', '橘子'], answer: '蘋果' },
+                { type: 'image-guess', image: 'https://placehold.co/150x150/aabbcc/ffffff?text=Mountain', question: '圖片中的地貌客語是「山」，請問其漢語是？', options: ['河', '山', '海', '田'], answer: '山' }
+            ],
+            medium: [ // 確保至少 10 題
+                { type: 'multiple-choice', question: '「走衝」是什麼意思？', options: ['跑得快', '趕緊走', '衝動', '努力奮鬥'], answer: '努力奮鬥', pinyin: 'zeu cung' },
+                { type: 'multiple-choice', question: '「遽遽仔」是什麼意思？', options: ['快一點', '慢慢來', '一下子', '很遠'], answer: '快一點', pinyin: 'gi gi e' },
+                { type: 'multiple-choice', question: '「頭擺」是什麼意思？', options: ['現在', '以前', '將來', '昨天'], answer: '以前', pinyin: 'teu bai' },
+                { type: 'multiple-choice', question: '「打幫手」是什麼意思？', options: ['打架', '幫助', '幫忙', '打招呼'], answer: '幫忙', pinyin: 'da bong seu' },
+                { type: 'multiple-choice', question: '「禾埕」是什麼意思？', options: ['稻埕', '客廳', '廚房', '臥室'], answer: '稻埕', pinyin: 'vo tang' },
+                { type: 'fill-in', question: '客語諺語：「食果子拜樹___」。', answer: '頭', pinyin: 'sit go zi bai su teu' },
+                { type: 'fill-in', question: '客語中「可愛」是「惜___」。', answer: '惜', pinyin: 'siak siak' },
+                { type: 'fill-in', question: '客語中「很」是「___」。', answer: '盡', pinyin: 'jin' },
+                { type: 'fill-in', question: '「太陽」客語是「日___」。', answer: '頭', pinyin: 'ngit teu' },
+                { type: 'fill-in', question: '「月亮」客語是「月___」。', answer: '光', pinyin: 'ngiet gong' },
+                { type: 'image-guess', image: 'https://placehold.co/150x150/aabbcc/ffffff?text=Rain', question: '圖片中的天氣現象客語是「雨」，請問其漢語是？', options: ['雪', '風', '雨', '晴'], answer: '雨' },
+                { type: 'multiple-choice', question: '形容事物「很漂亮」的客語是？', options: ['盡靚', '盡惡', '盡惜', '盡好'], answer: '盡靚', pinyin: 'jin liang' }
+            ],
+            hard: [ // 確保至少 10 題
+                { type: 'multiple-choice', question: '「七坐八爬九發牙」是什麼意思？', options: ['形容嬰兒成長過程', '表示時間很快', '比喻學習循序漸進', '說人做事慢'], answer: '形容嬰兒成長過程', pinyin: 'cit zo pat pa giu fat nga' },
+                { type: 'multiple-choice', question: '「有食毋過三頓」是什麼意思？', options: ['食物很少', '吃不完三餐', '比喻人生命有限，應把握時光', '表示很節儉'], answer: '比喻人生命有限，應把握時光', pinyin: 'iu sit m go sam tun' },
+                { type: 'multiple-choice', question: '「人來客去」是什麼意思？', options: ['形容人際關係複雜', '比喻生意興隆', '指人來人往的景象', '表示來去匆匆'], answer: '指人來人往的景象', pinyin: 'ngin loi hak hi' },
+                { type: 'multiple-choice', question: '「看生食，毋看死食」是什麼意思？', options: ['活著的時候要吃好', '不要浪費食物', '比喻要珍惜眼前機會，不要空等', '指人只看表面'], answer: '比喻要珍惜眼前機會，不要空等', pinyin: 'kon sang sit, m kon si sit' },
+                { type: 'multiple-choice', question: '「雞啼狗吠」是什麼意思？', options: ['形容農村景象', '比喻吵鬧不休', '形容時間很早', '指雞犬不寧'], answer: '形容農村景象', pinyin: 'goi ti geu fi' },
+                { type: 'fill-in', question: '客語諺語：「三日打魚，兩日___網」。', answer: '曝', pinyin: 'sam ngit da ngi, liong ngit pok mong' },
+                { type: 'fill-in', question: '客語諺語：「毋當家毋知柴米___」。', answer: '貴', pinyin: 'm dong ga m zi cai mi gui' },
+                { type: 'fill-in', question: '客語諺語：「有錢難買少年___」。', answer: '時', pinyin: 'iu cien nan mai seu nien si' },
+                { type: 'fill-in', question: '客語諺語：「一樣米養百樣___」。', answer: '人', pinyin: 'it iong mi iong pak iong ngin' },
+                { type: 'fill-in', question: '「逐家」的客家字是「___家」。', answer: '逐', pinyin: 'tuk ga' },
+                { type: 'image-guess', image: 'https://placehold.co/150x150/aabbcc/ffffff?text=Happy', question: '這張圖片傳達的情緒客語是「歡喜」，請問其漢語是？', options: ['悲傷', '生氣', '歡喜', '害怕'], answer: '歡喜' },
+                { type: 'multiple-choice', question: '形容一個人「很聰明」的客語是？', options: ['盡笨', '盡𠢕 (gau)', '盡慢', '盡堵'], answer: '盡𠢕 (gau)', pinyin: 'jin gau' },
+                { type: 'image-guess', image: 'https://placehold.co/150x150/aabbcc/ffffff?text=Old', question: '這張圖片代表的年齡客語是「老」，請問其漢語是？', options: ['年輕', '中年', '老年', '兒童'], answer: '老年' },
+                { type: 'multiple-choice', question: '形容天氣「很熱」的客語是？', options: ['盡寒', '盡燒', '盡涼', '盡暖'], answer: '盡燒', pinyin: 'jin sau' },
+                { type: 'image-guess', image: 'https://placehold.co/150x150/aabbcc/ffffff?text=Food', question: '這張圖片代表的客語是「食」 (sii)，請問其漢語是？', options: ['玩', '走', '看', '吃'], answer: '吃' },
+                { type: 'multiple-choice', question: '「打嘴鼓」是什麼意思？', options: ['打架', '聊天', '唱歌', '說笑'], answer: '聊天', pinyin: 'da zui gu' }
+            ]
+        };
+        
+        // 虛擬角色語音庫
+        const mascotSpeeches = {
+            neutral: "來學客語囉！",
+            correct: ["答對了！你真棒！", "客語小天才就是你！", "麼介厲害！"],
+            wrong: ["再想想看喔！", "沒關係，下次會更好！", "毋使愁，繼續努力！"],
+            timeLow: "時間快到囉！",
+            gameOver: "遊戲結束！看看你的分數！",
+            leaderboard: "這些是客語大師！"
+        };
 
-        // --- 題庫資料 ---
-        // 校對後的題目，移除聽力題，增加圖片題和形容詞猜字題
-        const allQuestions = [
-            // 初級題目 (單字翻譯)
-            { type: 'multiple-choice', level: 'easy', question: "「你好」个客語怎講？", options: ["多謝", "你好", "再見", "毋使愁"], answer: 1 },
-            { type: 'multiple-choice', level: 'easy', question: "「謝謝」个客語怎講？", options: ["多謝", "你好", "承蒙你", "毋會"], answer: 0 },
-            { type: 'fill-in-the-blank', level: 'easy', question: "請填寫「不客氣」个客語：毋使_______。", answer: "愁" },
-            { type: 'multiple-choice', level: 'easy', question: "「吃飯」个客語怎講？", options: ["食飯", "食茶", "食點心", "食麵"], answer: 0 },
-            { type: 'multiple-choice', level: 'easy', question: "「喝水」个客語怎講？", options: ["食水", "啉水", "飲水", "洗手"], answer: 1 },
-            { type: 'fill-in-the-blank', level: 'easy', question: "請填寫「再見」个客語：_______。", answer: "再見" },
-            { type: 'multiple-choice', level: 'easy', question: "「早上好」个客語怎講？", options: ["早安", "下晝好", "夜晡好", "暗晡夜好"], answer: 0 },
-            { type: 'multiple-choice', level: 'easy', question: "「睡覺」个客語怎講？", options: ["食飽", "睡目", "著衫", "洗身"], answer: 1 },
-            { type: 'fill-in-the-blank', level: 'easy', question: "請填寫「錢」个客語：_______。", answer: "錢" },
-            { type: 'multiple-choice', level: 'easy', question: "「回家」个客語怎講？", options: ["轉屋下", "上班", "讀書", "運動"], answer: 0 },
-
-            // 中級題目 (詞語填空、簡單描述猜字)
-            { type: 'multiple-choice', level: 'medium', question: "「麼个」在客語中是什麼意思？", options: ["什麼", "哪裡", "多少", "如何"], answer: 0 },
-            { type: 'fill-in-the-blank', level: 'medium', question: "請填寫「漂亮」个客語：_______靚。", answer: "靚" },
-            { type: 'multiple-choice', level: 'medium', question: "「毋識」在客語中是什麼意思？", options: ["認識", "不認識", "知道", "不知道"], answer: 1 },
-            { type: 'multiple-choice', level: 'medium', question: "「搞麼个」在客語中是什麼意思？", options: ["做什麼", "怎麼辦", "為什麼", "在哪裡"], answer: 0 },
-            { type: 'fill-in-the-blank', level: 'medium', question: "請填寫「開心」个客語：歡_______。", answer: "喜" },
-            { type: 'multiple-choice', level: 'medium', question: "「鑊嫲」在客語中是什麼意思？", options: ["鍋子", "碗", "筷子", "盤子"], answer: 0 },
-            { type: 'multiple-choice', level: 'medium', question: "「日頭」在客語中是什麼意思？", options: ["月亮", "太陽", "星星", "雲朵"], answer: 1 },
-            { type: 'fill-in-the-blank', level: 'medium', question: "請填寫「客人」个客語：_______人。", answer: "客" },
-            { type: 'multiple-choice', level: 'medium', question: "「毋好意思」在客語中是什麼意思？", options: ["對不起", "沒關係", "請", "謝謝"], answer: 0 },
-            { type: 'fill-in-the-blank', level: 'medium', question: "請填寫「學校」个客語：學_______。", answer: "校" },
-            { type: 'image-choice', level: 'medium', image: 'images/flower.png', question: "請看圖片，選擇客語中「花」的說法：", options: ["竹", "樹", "花", "草"], answer: 2 }, // 假設您有 `images/flower.png`
-            { type: 'description-fill-in', level: 'medium', question: "形容一個人「很瘦」，客語會說「承_______」。", answer: "瘦" },
-
-            // 高級題目 (諺語填空、圖片題、形容詞猜字)
-            { type: 'multiple-choice', level: 'hard', question: "「禾埕」在客語中是什麼意思？", options: ["曬穀場", "客廳", "廚房", "臥室"], answer: 0 }, // 修正翻譯
-            { type: 'fill-in-the-blank', level: 'hard', question: "「頭擺」在客語中是指「_______以前」。", answer: "很久" },
-            { type: 'multiple-choice', level: 'hard', question: "「細人仔」在客語中是什麼意思？", options: ["大人", "小孩", "老人", "青年"], answer: 1 },
-            { type: 'multiple-choice', level: 'hard', question: "「正經」在客語中是什麼意思？", options: ["真的", "假的", "可能", "也許"], answer: 0 },
-            { type: 'fill-in-the-blank', level: 'hard', question: "「打幫手」在客語中是指「_______忙」。", answer: "幫" },
-            { type: 'multiple-choice', level: 'hard', question: "「遽遽」在客語中是什麼意思？", options: ["慢慢地", "快點", "安靜地", "大聲地"], answer: 1 },
-            { type: 'fill-in-the-blank', level: 'hard', question: "「燥毋燥」在客語中是問「_______不_______」。", answer: "熱不熱" },
-            { type: 'multiple-choice', level: 'hard', question: "「箸」在客語中是什麼意思？", options: ["湯匙", "碗", "筷子", "盤子"], answer: 2 },
-            { type: 'fill-in-the-blank', level: 'hard', question: "「食飽飯」个客語是「_______飽飯」。", answer: "食" },
-            { type: 'multiple-choice', level: 'hard', question: "「撖」在客語中是什麼意思？", options: ["很", "吃", "做", "走"], answer: 0 },
-            { type: 'image-choice', level: 'hard', image: 'images/mountain.png', question: "看到這張圖片，請選擇客語中「山」的說法：", options: ["水", "田", "山", "路"], answer: 2 }, // 假設您有 `images/mountain.png`
-            { type: 'description-fill-in', level: 'hard', question: "形容一個人「很會說話/很能說」，客語會說「講到出_______」。", answer: "花" }, // 講到出花 - 形容口才好，說話花俏動聽
-        ];
-
-        // --- 函數定義 ---
-
-        // 生成隨機題目
-        function getRandomQuestions(num, level) {
-            const filteredQuestions = allQuestions.filter(q => q.level === level);
-            const shuffled = filteredQuestions.sort(() => 0.5 - Math.random());
-            return shuffled.slice(0, num);
-        }
-
-        // 啟動計時器 (單人模式專用)
-        function startTimer() {
-            clearInterval(timerInterval);
-            timeLeft = TIME_PER_QUESTION;
-            timerDisplay.textContent = timeLeft;
-            timerArea.classList.remove('time-low'); // 移除警告樣式
-            timerInterval = setInterval(updateTimer, 1000);
-        }
-
-        // 更新計時器 (單人模式專用)
-        function updateTimer() {
-            timerDisplay.textContent = timeLeft;
-            if (timeLeft <= WARNING_TIME && timeLeft > 0) {
-                timerArea.classList.add('time-low');
-                playSound(timeWarningSound); // 時間快結束時播放警告音
-            } else if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                timerArea.classList.add('time-low');
-                feedbackText.textContent = '時間到了！';
-                disableControls();
-                nextButton.classList.remove('hidden');
-                comboStreak = 0; // 時間到，連擊歸零
-                showMascotSpeech("時間到囉！下次反應快一點！", 1500, 'images/mascot_sad.png'); // 時間到，小精靈提示
-                comboStreakDisplay.classList.add('hidden');
+        function showMascotSpeech(type) {
+            let message = mascotSpeeches[type];
+            if (Array.isArray(message)) {
+                message = message[Math.floor(Math.random() * message.length)];
+            } else if (type === 'neutral') {
+                message = mascotSpeeches.neutral;
             }
-            timeLeft--;
-        }
 
-        // 啟用控制項
-        function enableControls() {
-            Array.from(optionsContainer.children).forEach(button => {
-                button.disabled = false;
-                button.classList.remove('correct', 'wrong'); // 清除上次的答案顏色
-            });
-            fillInInput.disabled = false;
-            fillInSubmitButton.disabled = false;
-            fillInInput.style.borderColor = '#a0c4ff'; // 重置邊框顏色
-        }
-
-        // 禁用控制項
-        function disableControls() {
-            Array.from(optionsContainer.children).forEach(button => {
-                button.disabled = true;
-            });
-            fillInInput.disabled = true;
-            fillInSubmitButton.disabled = true;
-            fillInInput.style.borderColor = '#ccc'; // 禁用時變灰
-        }
-
-        // 音效播放函數
-        function playSound(soundElement) {
-            if (soundElement) {
-                soundElement.currentTime = 0; // 從頭播放
-                soundElement.play().catch(e => console.log("音效播放失敗:", e));
-            }
-        }
-
-        // 虛擬角色互動函數
-        function showMascotSpeech(message, duration = 2000, imageSrc = 'images/mascot_neutral.png') {
             mascotSpeechBubble.textContent = message;
-            mascotImage.src = imageSrc; // 根據情緒改變圖片
-
             mascotSpeechBubble.classList.add('active');
-            clearTimeout(mascotSpeechBubble.timer);
-            mascotSpeechBubble.timer = setTimeout(() => {
+            clearTimeout(mascotSpeechTimeout);
+            mascotSpeechTimeout = setTimeout(() => {
                 mascotSpeechBubble.classList.remove('active');
-                mascotImage.src = 'images/mascot_neutral.png'; // 回復中性表情
-            }, duration);
+            }, 3000); // 泡泡顯示3秒
         }
 
-        // 連擊顯示函數
+        // 顯示連擊數
         function showComboStreak() {
-            if (comboStreak > 1) { // 至少2連擊才顯示
+            if (comboStreak > 1) {
                 comboStreakDisplay.textContent = `${comboStreak} 連擊！`;
                 comboStreakDisplay.classList.remove('hidden');
-                // 觸發動畫
                 comboStreakDisplay.style.animation = 'none'; // 重置動畫
                 void comboStreakDisplay.offsetWidth; // 觸發重繪
                 comboStreakDisplay.style.animation = 'comboPop 0.8s ease-out forwards';
-
-                clearTimeout(comboStreakDisplay.timer);
-                comboStreakDisplay.timer = setTimeout(() => {
+                setTimeout(() => {
                     comboStreakDisplay.classList.add('hidden');
-                }, 1000); // 顯示1秒
-            } else {
-                comboStreakDisplay.classList.add('hidden');
+                }, 1500); // 連擊提示顯示1.5秒
             }
         }
 
 
-        // 單人模式的載入題目
-        function loadQuestionSinglePlayer() {
+        // 顯示介面函數
+        function showScreen(screenId) {
+            const screens = [levelSelectionContainer, gameContainer, leaderboardContainer, multiplayerLobbyContainer, gameRoomContainer];
+            screens.forEach(screen => {
+                if (screen.id === screenId) {
+                    screen.classList.remove('hidden');
+                } else {
+                    screen.classList.add('hidden');
+                }
+            });
+            // 在切換畫面時，播放背景音樂（如果尚未播放）
+            if (screenId === 'gameContainer' && backgroundMusic.paused) {
+                backgroundMusic.play().catch(e => console.error("Error playing background music:", e));
+            } else if (screenId !== 'gameContainer' && !backgroundMusic.paused) {
+                 backgroundMusic.pause();
+                 backgroundMusic.currentTime = 0; // 重置音樂
+            }
+
+            // 根據畫面顯示吉祥物語音
+            if (screenId === 'levelSelectionContainer') {
+                showMascotSpeech('neutral');
+                difficultySelect.classList.remove('hidden'); // 返回主選單時顯示下拉選單
+            } else if (screenId === 'leaderboardContainer') {
+                showMascotSpeech('leaderboard');
+                difficultySelect.classList.add('hidden'); // 遊戲或排行榜時隱藏下拉選單
+            } else { // 遊戲畫面或多人模式
+                difficultySelect.classList.add('hidden');
+            }
+        }
+
+        // 載入題目
+        function loadQuestions(level) {
+            questions = [...allQuestions[level]]; // 複製一份，避免修改原始資料
+            // 可以隨機打亂題目順序
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+            // 限制題目數量為 10 題
+            questions = questions.slice(0, 10); 
+            totalQuestionsDisplay.textContent = questions.length; // 將顯示 10
+        }
+
+        // 顯示當前題目
+        function displayQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                endGame();
+                return;
+            }
+
+            resetFeedback();
+            const question = questions[currentQuestionIndex];
+            questionText.textContent = question.question;
+
+            // 清除之前的選項或輸入框
             optionsContainer.innerHTML = '';
-            fillInContainer.classList.add('hidden');
             fillInInput.value = '';
-            feedbackText.textContent = '';
-            questionImage.classList.add('hidden'); // 隱藏圖片
-            questionImage.src = ''; // 清空圖片源
+            fillInInput.classList.add('hidden');
+            fillInSubmitButton.classList.add('hidden');
+            questionImage.classList.add('hidden');
+            if (question.image) {
+                 questionImage.src = question.image;
+                 questionImage.classList.remove('hidden');
+             } else {
+                 questionImage.src = ''; // 清除圖片
+             }
 
-            // 確保背景音樂播放 (如果還沒播放)
-            if (backgroundMusic.paused) {
-                backgroundMusic.play().catch(e => console.log("背景音樂播放失敗:", e));
+            // 根據題目類型顯示不同的元素
+            if (question.type === 'multiple-choice' || question.type === 'image-guess') {
+                optionsContainer.classList.remove('hidden');
+                question.options.forEach((option, index) => {
+                    const button = document.createElement('button');
+                    button.classList.add('option-button');
+                    button.textContent = option;
+                    button.dataset.index = index; // 用於識別選項
+                    button.addEventListener('click', () => checkAnswer(option, question.answer, button));
+                    optionsContainer.appendChild(button);
+                });
+            } else if (question.type === 'fill-in') {
+                optionsContainer.classList.add('hidden');
+                fillInInput.classList.remove('hidden');
+                fillInSubmitButton.classList.remove('hidden');
+                fillInSubmitButton.onclick = () => checkAnswer(fillInInput.value, question.answer);
+                fillInInput.focus(); // 自動聚焦輸入框
             }
 
-            if (currentQuestionIndex < currentQuestions.length) {
-                startTimer(); // 單人模式使用本地計時
-
-                const q = currentQuestions[currentQuestionIndex];
-                questionText.textContent = q.question;
-
-                if (q.image) { // 如果是圖片題
-                    questionImage.src = q.image;
-                    questionImage.classList.remove('hidden');
-                }
-
-                if (q.type === 'multiple-choice' || q.type === 'image-choice') {
-                    optionsContainer.classList.remove('hidden');
-                    optionsContainer.style.display = 'grid';
-                    q.options.forEach((option, index) => {
-                        const button = document.createElement('button');
-                        button.classList.add('option-button');
-                        button.textContent = option;
-                        button.dataset.index = index;
-                        button.addEventListener('click', () => checkAnswerSinglePlayer(button, index, q.answer, q.type));
-                        optionsContainer.appendChild(button);
-                    });
-                } else if (q.type === 'fill-in-the-blank' || q.type === 'description-fill-in') {
-                    optionsContainer.classList.add('hidden');
-                    fillInContainer.classList.remove('hidden');
-                    fillInInput.focus();
-                    fillInSubmitButton.onclick = () => checkAnswerSinglePlayer(null, fillInInput.value.trim(), q.answer, q.type);
-                    fillInInput.onkeydown = (event) => {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            fillInSubmitButton.click();
-                        }
-                    };
-                }
-                nextButton.classList.add('hidden');
-                enableControls(); // 啟用控制項
-                showMascotSpeech("加油！看你的了！", 1500); // 每次出題都讓小精靈說話
-            } else {
-                // 遊戲結束
-                clearInterval(timerInterval);
-                timerArea.classList.add('hidden');
-                questionText.innerHTML = `遊戲結束！您的分數是 ${score} / ${currentQuestions.length}。承蒙您个參與！<br><small>想知道您的成績在排行榜上的表現嗎？</small>`;
-                optionsContainer.innerHTML = '';
-                fillInContainer.classList.add('hidden');
-                feedbackText.textContent = '';
-                nextButton.classList.add('hidden');
-                restartButton.classList.remove('hidden');
-                submitScoreButton.classList.remove('hidden');
-                showLeaderboardGameEndButton.classList.remove('hidden');
-                returnToModeSelectionFromGameButton.classList.remove('hidden'); // 確保這個按鈕顯示出來
-
-                backgroundMusic.pause();
-                backgroundMusic.currentTime = 0;
-
-                if (score / currentQuestions.length > 0.8) {
-                    showMascotSpeech("太棒了！您是客語小天才！", 3000, 'images/mascot_happy.png');
-                } else if (score / currentQuestions.length > 0.5) {
-                    showMascotSpeech("表現不錯喔！繼續努力！", 3000, 'images/mascot_smile.png');
-                } else {
-                    showMascotSpeech("別灰心，多練習就進步了！", 3000, 'images/mascot_sad.png');
-                }
-            }
+            startTimer();
+            // 在顯示新題目時，確保下一題按鈕是隱藏的
+            nextQuestionBtn.classList.add('hidden');
         }
 
-        // 單人模式的檢查答案
-        function checkAnswerSinglePlayer(clickedElement, selectedValue, correctAnswer, type) {
-            clearInterval(timerInterval);
-            disableControls();
+        // 檢查答案
+        function checkAnswer(selectedAnswer, correctAnswer, clickedButton = null) {
+            if (!gameActive) return;
 
-            let isCorrect = false;
-            let actualCorrectAnswer = '';
+            stopTimer();
+            gameActive = false; // 暫停遊戲直到下一題
 
-            if (type === 'multiple-choice' || type === 'image-choice') {
-                if (selectedValue === correctAnswer) {
-                    isCorrect = true;
-                }
-                actualCorrectAnswer = currentQuestions[currentQuestionIndex].options[correctAnswer];
-                if (clickedElement) {
-                    clickedElement.classList.add(isCorrect ? 'correct' : 'wrong');
-                    if (!isCorrect) {
-                        Array.from(optionsContainer.children).forEach(button => {
-                            if (parseInt(button.dataset.index) === correctAnswer) {
-                                button.classList.add('correct');
-                            }
-                        });
-                    }
-                }
-            } else if (type === 'fill-in-the-blank' || type === 'description-fill-in') {
-                // 將使用者輸入的答案和正確答案都轉換為小寫英文，並移除所有非中文字元，以進行更寬鬆的匹配
-                const normalizedSelected = String(selectedValue).toLowerCase().replace(/[^\u4e00-\u9fa5a-z0-9]/g, '');
-                const normalizedCorrect = String(correctAnswer).toLowerCase().replace(/[^\u4e00-\u9fa5a-z0-9]/g, '');
-                isCorrect = (normalizedSelected === normalizedCorrect);
-                actualCorrectAnswer = correctAnswer;
-                fillInInput.disabled = true;
-                fillInSubmitButton.disabled = true;
-                if (isCorrect) {
-                    fillInInput.style.borderColor = '#8bc34a';
-                } else {
-                    fillInInput.style.borderColor = '#ff7043';
-                }
-            }
+            const isCorrect = (typeof correctAnswer === 'string')
+                ? selectedAnswer.trim().toLowerCase() === correctAnswer.trim().toLowerCase()
+                : selectedAnswer === correctAnswer; // 處理填空題大小寫不敏感
 
             if (isCorrect) {
                 score++;
-                comboStreak++;
                 scoreDisplay.textContent = score;
-                feedbackText.textContent = '答對了！承蒙您！';
-                playSound(correctSound);
-                showMascotSpeech("你真棒！", 1500, 'images/mascot_happy.png');
+                feedbackText.textContent = '✅ 正確！';
+                feedbackText.style.color = '#4caf50'; // 綠色
+                correctSound.play().catch(e => console.error("Error playing sound:", e));
+                comboStreak++;
                 showComboStreak();
+                showMascotSpeech('correct');
             } else {
-                comboStreak = 0;
-                feedbackText.textContent = `答錯了！正確答案是：「${actualCorrectAnswer}」。`;
-                playSound(wrongSound);
-                showMascotSpeech("沒關係！再想想！", 1500, 'images/mascot_sad.png');
-                comboStreakDisplay.classList.add('hidden');
+                feedbackText.textContent = `❌ 錯誤！正確答案是：${correctAnswer}`;
+                feedbackText.style.color = '#ff5722'; // 紅色
+                wrongSound.play().catch(e => console.error("Error playing sound:", e));
+                comboStreak = 0; // 連擊中斷
+                showMascotSpeech('wrong');
             }
-            nextButton.classList.remove('hidden');
-        }
 
-        // 下一題（單人模式）
-        function nextQuestion() {
-            if (currentMode === 'single') {
-                currentQuestionIndex++;
-                loadQuestionSinglePlayer();
-            } else {
-                // 多人模式下 '下一題' 按鈕行為由房主觸發，並透過 Firebase 監聽更新
-                console.log("多人模式下，下一題邏輯由房間狀態更新觸發。");
-            }
-        }
-
-        // --- 排行榜相關功能 ---
-        async function submitScore() {
-            const playerName = prompt('請輸入您的姓名 (將用於排行榜):', localStorage.getItem('playerName') || '匿名玩家');
-            if (playerName) {
-                localStorage.setItem('playerName', playerName);
-                try {
-                    await db.collection('leaderboard').add({
-                        name: playerName,
-                        score: score,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    alert('分數已提交成功！');
-                    showLeaderboard();
-                } catch (e) {
-                    console.error("提交分數失敗: ", e);
-                    alert('提交分數失敗，請稍後再試。');
+            // 禁用所有選項按鈕或提交按鈕
+            const allOptionButtons = optionsContainer.querySelectorAll('.option-button');
+            allOptionButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent.trim().toLowerCase() === correctAnswer.trim().toLowerCase()) {
+                    btn.classList.add('correct');
+                } else if (btn === clickedButton) {
+                    btn.classList.add('wrong');
                 }
+            });
+            if (fillInInput) fillInInput.disabled = true;
+            if (fillInSubmitButton) fillInSubmitButton.disabled = true;
+
+            nextQuestionBtn.classList.remove('hidden');
+            resetGameBtn.classList.remove('hidden');
+            showLeaderboardBtn.classList.remove('hidden');
+            returnToHomeBtn.classList.remove('hidden');
+        }
+
+        // 重設反饋訊息
+        function resetFeedback() {
+            feedbackText.textContent = '';
+            feedbackText.style.color = '#e91e63'; // 重設顏色
+            const allOptionButtons = optionsContainer.querySelectorAll('.option-button');
+            allOptionButtons.forEach(btn => {
+                btn.classList.remove('correct', 'wrong');
+                btn.disabled = false;
+            });
+            if (fillInInput) {
+                fillInInput.disabled = false;
+                fillInInput.value = ''; // 清空輸入框
+            }
+            if (fillInSubmitButton) fillInSubmitButton.disabled = false;
+        }
+
+        // 開始計時器
+        function startTimer() {
+            seconds = 0; // 重置時間
+            timeLeft = 30; // 每題秒數
+            timerDisplay.textContent = timeLeft;
+            timerDisplay.classList.remove('time-low'); // 移除低時間樣式
+            gameActive = true;
+
+            timer = setInterval(() => {
+                timeLeft--;
+                seconds++; // 累計總時間
+                timerDisplay.textContent = timeLeft;
+                if (timeLeft <= 10 && timeLeft > 0) {
+                    timerDisplay.classList.add('time-low');
+                    // 確保時間警告音只播放一次，或控制播放頻率
+                    if (timeLeft % 5 === 0) { // 每5秒提醒一次
+                        timeWarningSound.play().catch(e => console.error("Error playing sound:", e));
+                    }
+                } else if (timeLeft <= 0) {
+                    stopTimer();
+                    checkAnswer('', '時間到！'); // 時間到自動判錯
+                    gameActive = false;
+                }
+            }, 1000);
+        }
+
+        // 停止計時器
+        function stopTimer() {
+            clearInterval(timer);
+        }
+
+        // 結束遊戲
+        async function endGame() {
+            stopTimer();
+            gameActive = false;
+            feedbackText.textContent = `遊戲結束！你的分數是：${score} / ${questions.length}`;
+            feedbackText.style.color = '#007bff'; // 藍色
+            nextQuestionBtn.classList.add('hidden'); // 遊戲結束不顯示下一題
+            resetGameBtn.classList.remove('hidden');
+            showLeaderboardBtn.classList.remove('hidden');
+            returnToHomeBtn.classList.remove('hidden');
+            showMascotSpeech('gameOver');
+
+            // 提示玩家輸入姓名以記錄分數
+            let playerName = prompt(`恭喜你完成測驗！你的分數是 ${score}！\n請輸入你的暱稱，將分數記錄到排行榜：`);
+            if (playerName) {
+                // 限制暱稱長度
+                playerName = playerName.trim().substring(0, 15) || '匿名玩家';
+                await saveScoreToLeaderboard(playerName, score, seconds, currentLevel); // 傳遞 currentLevel
+            } else {
+                playerName = '匿名玩家'; // 如果取消或未輸入，使用匿名
+                await saveScoreToLeaderboard(playerName, score, seconds, currentLevel); // 即使匿名也記錄分數
             }
         }
 
-        async function showLeaderboard() {
-            // --- 修正點 2: 確保所有非排行榜容器都被隱藏 ---
-            gameContainer.classList.add('hidden');
-            levelSelectionContainer.classList.add('hidden');
-            multiplayerLobby.classList.add('hidden');
-            gameRoomContainer.classList.add('hidden');
-            leaderboardContainer.classList.remove('hidden'); // 顯示排行榜
+        // 重設遊戲
+        function resetGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            scoreDisplay.textContent = score;
+            seconds = 0; // 重置總時間
+            stopTimer();
+            resetFeedback();
+            nextQuestionBtn.classList.add('hidden');
+            resetGameBtn.classList.add('hidden');
+            showLeaderboardBtn.classList.add('hidden');
+            returnToHomeBtn.classList.add('hidden');
+            comboStreak = 0; // 重置連擊
 
-            backgroundMusic.pause();
-            backgroundMusic.currentTime = 0;
+            // 如果是單人模式，重新載入題目並開始
+            if (currentMode === 'single') {
+                loadQuestions(currentLevel); // 重新載入當前難度的題目
+                displayQuestion();
+            } else {
+                // 多人模式的重置可能意味著返回大廳或等待房主操作
+                // 這裡簡單地返回到房間等待介面
+                showScreen('gameRoomContainer');
+                roomStatusMessage.textContent = '遊戲已重置，等待房主開始新遊戲。';
+                startGameBtn.classList.remove('hidden'); // 讓房主可以再次開始
+            }
+        }
 
+        // 處理主選單模式選擇
+        document.querySelectorAll('.mode-button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                currentMode = event.target.dataset.mode;
+                if (currentMode === 'single') {
+                    // 單人模式讀取下拉選單的難度
+                    currentLevel = difficultySelect.value;
+                    loadQuestions(currentLevel);
+                    showScreen('gameContainer');
+                    displayQuestion();
+                } else if (currentMode === 'multi') {
+                    // 多人模式進入大廳
+                    showScreen('multiplayerLobbyContainer');
+                    refreshRoomList(); // 進入大廳時刷新房間列表
+                }
+            });
+        });
+
+        // 排行榜相關功能
+        showLeaderboardInitialBtn.addEventListener('click', () => {
+            showScreen('leaderboardContainer');
+            // 預設顯示簡單難度的排行榜
+            leaderboardBtnEasy.classList.add('active');
+            leaderboardBtnMedium.classList.remove('active');
+            leaderboardBtnHard.classList.remove('active');
+            loadLeaderboard('easy');
+        });
+
+        showLeaderboardBtn.addEventListener('click', () => {
+            showScreen('leaderboardContainer');
+            // 預設顯示簡單難度的排行榜
+            leaderboardBtnEasy.classList.add('active');
+            leaderboardBtnMedium.classList.remove('active');
+            leaderboardBtnHard.classList.remove('active');
+            loadLeaderboard('easy');
+        });
+
+        returnFromLeaderboardBtn.addEventListener('click', () => {
+            showScreen('levelSelectionContainer'); // 返回主選單
+            // 移除排行榜難度按鈕的 active 類
+            document.querySelectorAll('.leaderboard-difficulty-tabs button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        });
+
+        // 排行榜難度切換按鈕事件
+        leaderboardBtnEasy.addEventListener('click', handleLeaderboardDifficultyChange);
+        leaderboardBtnMedium.addEventListener('click', handleLeaderboardDifficultyChange);
+        leaderboardBtnHard.addEventListener('click', handleLeaderboardDifficultyChange);
+
+        // 處理排行榜難度按鈕切換
+        function handleLeaderboardDifficultyChange(event) {
+            // 移除所有難度按鈕的 active 類
+            document.querySelectorAll('.leaderboard-difficulty-tabs button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // 為當前點擊的按鈕添加 active 類
+            event.target.classList.add('active');
+
+            const selectedDifficulty = event.target.dataset.difficulty;
+            loadLeaderboard(selectedDifficulty);
+        }
+
+        // 載入下一題
+        nextQuestionBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            displayQuestion();
+        });
+
+        resetGameBtn.addEventListener('click', resetGame);
+
+
+        // ====== Firebase 整合部分 ======
+
+        // 將分數儲存到 Firebase 排行榜 (已包含難度分類)
+        async function saveScoreToLeaderboard(playerName, gameScore, gameTime, gameDifficulty) {
+            try {
+                // 每個難度一個排行榜集合
+                const leaderboardCollectionRef = db.collection('leaderboards').doc(gameDifficulty).collection('scores');
+                
+                await leaderboardCollectionRef.add({
+                    playerName: playerName,
+                    score: gameScore,
+                    time: gameTime, // 儲存總時間
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp() // 使用伺服器時間戳記排序
+                });
+                console.log("Score saved successfully to", gameDifficulty, "leaderboard!");
+                // alert("分數已成功記錄到排行榜！"); // 避免多次彈出
+            } catch (e) {
+                console.error("儲存分數到排行榜時發生錯誤: ", e);
+                // alert("記錄分數失敗，請稍後再試。");
+            }
+        }
+
+        // 從 Firestore 載入並顯示排行榜 (已包含難度分類)
+        async function loadLeaderboard(difficultyLevel) {
             leaderboardList.innerHTML = '<li>載入中...</li>';
             try {
-                const snapshot = await db.collection('leaderboard').orderBy('score', 'desc').limit(10).get();
-                leaderboardList.innerHTML = '';
-                if (snapshot.empty) {
-                    leaderboardList.innerHTML = '<li>目前還沒有任何紀錄。</li>';
+                const leaderboardCollectionRef = db.collection('leaderboards').doc(difficultyLevel).collection('scores');
+                // 排序：分數高的優先，分數相同則時間短的優先
+                const querySnapshot = await leaderboardCollectionRef
+                    .orderBy('score', 'desc')
+                    .orderBy('time', 'asc')
+                    .limit(10) // 只取前10名
+                    .get();
+
+                leaderboardList.innerHTML = ''; // 清空舊的列表
+                if (querySnapshot.empty) {
+                    leaderboardList.innerHTML = '<li>目前沒有分數。</li>';
                     return;
                 }
-                snapshot.forEach((doc, index) => {
+
+                querySnapshot.forEach((doc, index) => {
                     const data = doc.data();
                     const listItem = document.createElement('li');
-                    listItem.innerHTML = `<span>${index + 1}. ${data.name}</span><span>${data.score} 分</span>`;
+                    listItem.innerHTML = `
+                        <span>第 ${index + 1} 名. ${data.playerName}</span>
+                        <span>分數: ${data.score} | 時間: ${data.time}s</span>
+                    `;
                     leaderboardList.appendChild(listItem);
                 });
-                showMascotSpeech("看看誰是客語大師！", 2000, 'images/mascot_smile.png');
 
-            }
-            catch (e) {
-                console.error("載入排行榜失敗: ", e);
+            } catch (e) {
+                console.error("載入排行榜時發生錯誤: ", e);
                 leaderboardList.innerHTML = '<li>載入排行榜失敗。</li>';
             }
         }
 
-        // --- 修正點 3: 將返回排行榜的邏輯統一呼叫 showModeSelection() ---
-        function returnFromLeaderboard() {
-            showModeSelection();
-        }
 
-        // --- 模式選擇與遊戲開始函數 ---
+        // ====== 多人模式 (基礎框架，需要後端配合) ======
 
-        // 顯示模式選擇介面
-        function showModeSelection() {
-            console.log("進入 showModeSelection..."); // 除錯訊息
+        // 這裡提供一個基於 Firestore 的**簡單**多人大廳和房間機制範例
+        // 實際的多人遊戲需要更複雜的狀態管理和即時數據同步
+        // 並且通常需要一個 Cloud Functions 或其他後端來避免客戶端直接寫入衝突
 
-            clearInterval(timerInterval); // 停止任何可能正在運行的計時器
+        
+        let roomRef = null; // 當前房間的 Firestore 參考
 
-            // --- 修正點 4: 確保 Firebase 監聽器被取消 (特別是多人模式) ---
-            if (roomSnapshotListener) {
-                console.log("取消 Firebase 房間監聽器.");
-                roomSnapshotListener(); // 取消舊的監聽
-                roomSnapshotListener = null;
-            }
-
-            // --- 修正點 5: 確保所有容器的顯示/隱藏狀態正確設定 ---
-            levelSelectionContainer.classList.remove('hidden'); // 顯示首頁 (模式選擇)
-
-            gameContainer.classList.add('hidden');
-            leaderboardContainer.classList.add('hidden');
-            multiplayerLobby.classList.add('hidden');
-            gameRoomContainer.classList.add('hidden');
-
-            // 隱藏所有遊戲結束/遊戲中可能出現的按鈕
-            nextButton.classList.add('hidden');
-            submitScoreButton.classList.add('hidden');
-            restartButton.classList.add('hidden');
-            showLeaderboardGameEndButton.classList.add('hidden');
-            if (returnToModeSelectionFromGameButton) { // 檢查元素是否存在，因為它可能只在遊戲結束後才存在
-                returnToModeSelectionFromGameButton.classList.add('hidden');
-            }
-
-
-            // 重置遊戲介面中的計分板、計時器等元素
-            score = 0; // 重置分數
-            currentQuestionIndex = 0; // 重置題目索引
-            comboStreak = 0; // 重置連擊數
-            scoreDisplay.textContent = '0';
-            totalQuestionsDisplay.textContent = NUM_QUESTIONS_PER_GAME; // 重置總題數顯示
-            timerDisplay.textContent = TIME_PER_QUESTION; // 重置計時器顯示
-            timerArea.classList.add('hidden'); // 隱藏計時器
-            timerArea.classList.remove('time-low'); // 移除計時器警告樣式
-            questionText.textContent = ''; // 清空題目顯示
-            optionsContainer.innerHTML = ''; // 清空選項
-            fillInContainer.classList.add('hidden'); // 隱藏填空
-            fillInInput.value = ''; // 清空填空輸入框
-            feedbackText.textContent = ''; // 清空回饋文字
-            questionImage.classList.add('hidden'); // 隱藏圖片題目
-            questionImage.src = '';
-
-            comboStreakDisplay.classList.add('hidden'); // 隱藏連擊提示
-
-            backgroundMusic.pause();
-            backgroundMusic.currentTime = 0; // 重置音樂到開頭
-
-            showMascotSpeech("歡迎回來！選擇你想玩的模式吧！", 2000, 'images/mascot_neutral.png');
-
-            // --- 修正點 6: 動態修改 levelSelectionContainer 的內容時，確保返回按鈕事件重新綁定 ---
-            // 因為 showLevelSelectionForSinglePlayer 會改變 levelSelectionContainer 的內容，
-            // 這裡需要確保首頁的按鈕事件是綁定在最原始的 HTML 結構上
-            // 或者，如果每次都動態生成首頁內容，就需要在這裡重新綁定 mode-button 和 show-leaderboard-initial
-            // 為了簡化，讓 showLevelSelectionForSinglePlayer 專門處理它的介面，
-            // showModeSelection 負責回到最初始的首頁狀態。
-            // 因此，這裡不應該有 `levelSelectionContainer.innerHTML = ...` 的操作，
-            // 而是讓 HTML 預設結構就是首頁，然後動態切換到難度選擇頁時再修改內容。
-            // (這在您原來的 HTML 結構中是這樣處理的，即 `levelSelectionContainer` 是首頁的根容器)
-            // 所以這裡不需要額外操作 `levelSelectionContainer.innerHTML`
-        }
-
-        // 顯示難度選擇介面 (單人模式)
-        function showLevelSelectionForSinglePlayer() {
-            levelSelectionContainer.classList.remove('hidden'); // 確保難度選擇容器是可見的
-            gameContainer.classList.add('hidden');
-            multiplayerLobby.classList.add('hidden');
-            gameRoomContainer.classList.add('hidden');
-            leaderboardContainer.classList.add('hidden');
-
-            // 動態修改 levelSelectionContainer 的內容為難度選擇按鈕
-            levelSelectionContainer.innerHTML = `
-                <h1>客語認證考題對對碰</h1>
-                <h2>請選擇挑戰難度：</h2>
-                <button class="level-button" data-level="easy">初級</button>
-                <button class="level-button" data-level="medium">中級</button>
-                <button class="level-button" data-level="hard">高級</button>
-                <button id="returnToModeSelectionFromLevels" class="btn return-btn">返回模式選擇</button>
-            `;
-            // --- 修正點 7: 動態生成按鈕後，必須重新綁定事件監聽器 ---
-            document.querySelectorAll('.level-button').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const level = event.target.dataset.level;
-                    startGame(level); // 呼叫單人模式開始遊戲
-                });
-            });
-            // 綁定「從難度選擇返回模式選擇」的按鈕
-            const returnToModeSelectionFromLevelsBtn = document.getElementById('returnToModeSelectionFromLevels');
-            if (returnToModeSelectionFromLevelsBtn) {
-                returnToModeSelectionFromLevelsBtn.addEventListener('click', showModeSelection);
-            }
-            showMascotSpeech("準備好了嗎？挑個難度開始吧！", 2000, 'images/mascot_smile.png');
-        }
-
-        // 單人模式開始遊戲
-        function startGame(level) {
-            currentMode = 'single'; // 設定為單人模式
-            selectedLevel = level;
-            score = 0;
-            currentQuestionIndex = 0;
-            currentQuestions = getRandomQuestions(NUM_QUESTIONS_PER_GAME, selectedLevel);
-            totalQuestionsDisplay.textContent = currentQuestions.length;
-            scoreDisplay.textContent = score;
-
-            levelSelectionContainer.classList.add('hidden'); // 隱藏難度選擇
-            gameContainer.classList.remove('hidden'); // 顯示遊戲介面
-            leaderboardContainer.classList.add('hidden');
-            multiplayerLobby.classList.add('hidden');
-            gameRoomContainer.classList.add('hidden');
-
-            nextButton.classList.add('hidden');
-            submitScoreButton.classList.add('hidden');
-            restartButton.classList.add('hidden');
-            showLeaderboardGameEndButton.classList.add('hidden');
-            returnToModeSelectionFromGameButton.classList.remove('hidden'); // 遊戲中顯示返回按鈕
-            timerArea.classList.remove('hidden');
-            timerArea.classList.remove('time-low');
-
-            loadQuestionSinglePlayer();
-        }
-
-
-        // 多人對戰相關邏輯
-        function generatePlayerId() {
-            return 'player_' + Date.now() + Math.random().toString(36).substring(2, 9);
-        }
-
-        // 顯示多人對戰大廳
-        async function showMultiplayerLobby() {
-            currentMode = 'multi';
-            clearInterval(timerInterval);
-            // --- 修正點 8: 確保 Firebase 監聽器在進入大廳時被清理 ---
-            if (roomSnapshotListener) {
-                roomSnapshotListener();
-                roomSnapshotListener = null;
-            }
-
-            levelSelectionContainer.classList.add('hidden');
-            gameContainer.classList.add('hidden');
-            leaderboardContainer.classList.add('hidden');
-            multiplayerLobby.classList.remove('hidden'); // 顯示大廳
-            gameRoomContainer.classList.add('hidden');
-
-            myPlayerId = generatePlayerId();
-            playerNameInput.value = localStorage.getItem('playerName') || '玩家' + Math.floor(Math.random() * 1000);
-            myPlayerName = playerNameInput.value;
-            localStorage.setItem('playerName', myPlayerName);
-
-            showMascotSpeech("歡迎來到對戰大廳！", 2000, 'images/mascot_neutral.png');
-            await updateAvailableRooms();
-        }
-
-        // 更新可用房間列表
-        async function updateAvailableRooms() {
-            availableRoomsList.innerHTML = '<li style="text-align: center; color: #888;">載入房間中...</li>';
-            try {
-                const snapshot = await db.collection('rooms').where('status', '==', 'waiting').get();
-                availableRoomsList.innerHTML = '';
-                if (snapshot.empty) {
-                    availableRoomsList.innerHTML = '<li style="text-align: center; color: #888;">目前沒有開放中的房間，快來創建一個吧！</li>';
-                    return;
-                }
-                snapshot.forEach(doc => {
-                    const room = doc.data();
-                    const hostName = room.players[room.hostId]?.name || '未知玩家';
-                    const listItem = document.createElement('li');
-                    listItem.innerHTML = `
-                        <span>房間 ID: ${doc.id.substring(0, 6)} - 主機: ${hostName} (${Object.keys(room.players).length}/2)</span>
-                        <button data-room-id="${doc.id}">加入</button>
-                    `;
-                    listItem.querySelector('button').addEventListener('click', () => joinRoom(doc.id));
-                    availableRoomsList.appendChild(listItem);
-                });
-            } catch (error) {
-                console.error("更新房間列表失敗:", error);
-                alert("更新房間列表失敗，請稍後再試。");
-            }
-        }
-
-        // 創建房間
-        async function createRoom() {
-            myPlayerName = playerNameInput.value.trim() || '玩家';
-            if (myPlayerName.length < 2) {
-                alert("請輸入至少兩個字元的玩家名稱。");
+        createRoomBtn.addEventListener('click', async () => {
+            if (!playerNameInput.value.trim()) {
+                alert('請輸入你的暱稱！');
                 return;
             }
-            localStorage.setItem('playerName', myPlayerName);
+            currentPlayerName = playerNameInput.value.trim().substring(0, 15);
 
             try {
-                const newRoomRef = await db.collection('rooms').add({
-                    status: 'waiting',
-                    hostId: myPlayerId,
-                    players: {
-                        [myPlayerId]: {
-                            name: myPlayerName,
-                            score: 0,
-                            ready: false,
-                            lastAnswerTime: null, // 新增用於多人模式判斷答題時間
-                            submittedAnswer: null // 新增用於多人模式儲存答案
-                        }
-                    },
-                    currentQuestion: null,
-                    questionIndex: 0,
-                    roundEndTime: null,
-                    winnerId: null,
+                // 創建一個新的房間文檔
+                const newRoomRef = await db.collection('gameRooms').add({
+                    host: currentPlayerName,
+                    client: null,
+                    status: 'waiting', // 'waiting', 'ready', 'playing', 'finished'
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    questions: [], // 遊戲題目
+                    hostScore: 0,
+                    clientScore: 0
                 });
                 currentRoomId = newRoomRef.id;
-                await enterGameRoom(currentRoomId);
-                showMascotSpeech(`房間創建成功！等待對手加入。`, 2500, 'images/mascot_smile.png');
-                alert(`房間創建成功！房間 ID: ${currentRoomId.substring(0, 6)}`);
-            } catch (error) {
-                console.error("創建房間失敗:", error);
-                alert("創建房間失敗，請稍後再試。");
+                roomRef = db.collection('gameRooms').doc(currentRoomId);
+
+                roomNameDisplay.textContent = currentRoomId;
+                hostPlayerName.textContent = currentPlayerName;
+                clientPlayerName.textContent = '等待玩家...';
+                roomStatusMessage.textContent = '等待其他玩家加入房間...';
+                startGameBtn.classList.remove('hidden'); // 房主可以開始遊戲
+
+                showScreen('gameRoomContainer');
+                listenToRoomChanges(); // 開始監聽房間狀態
+
+            } catch (e) {
+                console.error("Error creating room: ", e);
+                alert("建立房間失敗，請稍後再試。");
+            }
+        });
+
+        refreshRoomsBtn.addEventListener('click', refreshRoomList);
+
+        async function refreshRoomList() {
+            availableRoomsList.innerHTML = '<li>載入房間中...</li>';
+            try {
+                const snapshot = await db.collection('gameRooms')
+                                        .where('status', 'in', ['waiting', 'ready']) // 顯示等待中和已準備的房間
+                                        .get();
+
+                availableRoomsList.innerHTML = '';
+                if (snapshot.empty) {
+                    availableRoomsList.innerHTML = '<li>目前沒有可用的房間。</li>';
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const room = doc.data();
+                    // 只有在房間還沒有客戶端時才顯示「加入」按鈕
+                    if (!room.client) {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `
+                            <span>${room.host} 的房間</span>
+                            <button data-room-id="${doc.id}">加入</button>
+                        `;
+                        listItem.querySelector('button').addEventListener('click', (event) => joinRoom(event.target.dataset.roomId));
+                        availableRoomsList.appendChild(listItem);
+                    }
+                });
+
+            } catch (e) {
+                console.error("Error refreshing rooms: ", e);
+                availableRoomsList.innerHTML = '<li>載入房間列表失敗。</li>';
             }
         }
 
-        // 加入房間
-        async function joinRoom(roomId = null) {
-            if (!roomId) {
-                roomId = prompt('請輸入房間 ID (前6位字元即可):');
-                if (!roomId) return;
-                const shortId = roomId.toLowerCase();
-                try {
-                    const snapshot = await db.collection('rooms').get();
-                    let fullRoomId = null;
-                    snapshot.forEach(doc => {
-                        if (doc.id.toLowerCase().startsWith(shortId)) {
-                            fullRoomId = doc.id;
-                        }
-                    });
-                    if (fullRoomId) {
-                        roomId = fullRoomId;
-                    } else {
-                        alert('房間不存在或輸入錯誤。');
-                        return;
-                    }
-                } catch (error) {
-                    console.error("搜尋房間失敗:", error);
-                    alert("搜尋房間失敗，請稍後再試。");
-                    return;
-                }
-            }
-            myPlayerName = playerNameInput.value.trim() || '玩家';
-            if (myPlayerName.length < 2) {
-                alert("請輸入至少兩個字元的玩家名稱。");
+        async function joinRoom(roomId) {
+            if (!playerNameInput.value.trim()) {
+                alert('請輸入你的暱稱！');
                 return;
             }
-            localStorage.setItem('playerName', myPlayerName);
+            currentPlayerName = playerNameInput.value.trim().substring(0, 15);
 
             try {
-                const roomRef = db.collection('rooms').doc(roomId);
+                roomRef = db.collection('gameRooms').doc(roomId);
                 const roomDoc = await roomRef.get();
 
-                if (!roomDoc.exists) {
-                    alert('房間不存在或已結束。');
-                    return;
-                }
+                if (roomDoc.exists && roomDoc.data().status === 'waiting' && !roomDoc.data().client) {
+                    await roomRef.update({
+                        client: currentPlayerName,
+                        status: 'ready' // 房主和客戶端都準備好
+                    });
+                    currentRoomId = roomId;
+                    roomNameDisplay.textContent = roomId;
+                    hostPlayerName.textContent = roomDoc.data().host;
+                    clientPlayerName.textContent = currentPlayerName;
+                    roomStatusMessage.textContent = '已成功加入房間。等待房主開始遊戲...';
+                    startGameBtn.classList.add('hidden'); // 客戶端不能開始遊戲
 
-                const roomData = roomDoc.data();
-                if (roomData.status !== 'waiting') {
-                    alert('該房間已開始遊戲或已結束。');
-                    return;
-                }
+                    showScreen('gameRoomContainer');
+                    listenToRoomChanges(); // 開始監聽房間狀態
 
-                if (Object.keys(roomData.players).length >= 2) {
-                    alert('該房間已滿。');
-                    return;
+                } else {
+                    alert('房間不存在、已滿或遊戲已開始。');
                 }
-
-                await roomRef.update({
-                    [`players.${myPlayerId}`]: {
-                        name: myPlayerName,
-                        score: 0,
-                        ready: false,
-                        lastAnswerTime: null,
-                        submittedAnswer: null
-                    },
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                currentRoomId = roomId;
-                await enterGameRoom(currentRoomId);
-                showMascotSpeech(`成功加入房間！`, 2000, 'images/mascot_smile.png');
-            } catch (error) {
-                console.error("加入房間失敗:", error);
+            } catch (e) {
+                console.error("Error joining room: ", e);
                 alert("加入房間失敗，請稍後再試。");
             }
         }
 
-        // 進入遊戲房間介面並監聽狀態
-        async function enterGameRoom(roomId) {
-            multiplayerLobby.classList.add('hidden');
-            gameContainer.classList.add('hidden');
-            gameRoomContainer.classList.remove('hidden'); // 顯示遊戲房間
-
-            currentRoomIdDisplay.textContent = roomId.substring(0, 6);
-            myPlayerNameDisplay.textContent = myPlayerName;
-            myPlayerScoreDisplay.textContent = 0;
-            opponentPlayerScoreDisplay.textContent = 0;
-
-            // --- 修正點 9: 進入新房間前，取消任何舊的監聽器 ---
-            if (roomSnapshotListener) {
-                roomSnapshotListener(); // 取消舊的監聽
+        // 監聽房間狀態變化 (即時更新)
+        let roomUnsubscribe = null;
+        function listenToRoomChanges() {
+            if (roomUnsubscribe) {
+                roomUnsubscribe(); // 取消之前的監聽
             }
-            roomSnapshotListener = db.collection('rooms').doc(roomId).onSnapshot(docSnapshot => {
-                if (!docSnapshot.exists) {
-                    alert('房間已解散。');
-                    showMultiplayerLobby(); // 返回大廳
-                    return;
-                }
+            if (roomRef) {
+                roomUnsubscribe = roomRef.onSnapshot(docSnapshot => {
+                    if (docSnapshot.exists) {
+                        const roomData = docSnapshot.data();
+                        hostPlayerName.textContent = roomData.host;
+                        clientPlayerName.textContent = roomData.client || '等待玩家...';
 
-                const room = docSnapshot.data();
-                const players = room.players || {};
-                let opponentId = null;
-                for (const id in players) {
-                    if (id !== myPlayerId) {
-                        opponentId = id;
-                        break;
-                    }
-                }
-                opponentPlayerId = opponentId;
-
-                if (opponentId) {
-                    opponentPlayerNameDisplay.textContent = players[opponentId]?.name || '對手';
-                    opponentPlayerScoreDisplay.textContent = players[opponentId]?.score || 0;
-                } else {
-                    opponentPlayerNameDisplay.textContent = '等待中...';
-                    opponentPlayerScoreDisplay.textContent = 0;
-                }
-                myPlayerScoreDisplay.textContent = players[myPlayerId]?.score || 0;
-
-
-                if (room.status === 'waiting') {
-                    roomStatusMessage.textContent = `等待其他玩家加入... (房間人數: ${Object.keys(players).length}/2)`;
-                    startGameInRoomBtn.classList.add('hidden');
-                    if (room.hostId === myPlayerId && Object.keys(players).length === 2) {
-                        startGameInRoomBtn.classList.remove('hidden');
-                    }
-                    leaveRoomBtn.classList.remove('hidden');
-                    optionsContainer.classList.add('hidden');
-                    fillInContainer.classList.add('hidden');
-                    questionText.textContent = '';
-                    feedbackText.textContent = '';
-                    timerArea.classList.add('hidden');
-
-                } else if (room.status === 'playing') {
-                    gameRoomContainer.classList.add('hidden'); // 遊戲開始，隱藏房間介面
-                    gameContainer.classList.remove('hidden'); // 顯示遊戲進行介面
-                    startGameInRoomBtn.classList.add('hidden');
-                    leaveRoomBtn.classList.remove('hidden');
-                    returnToModeSelectionFromGameButton.classList.add('hidden'); // 遊戲中不顯示這個按鈕
-                    timerArea.classList.remove('hidden');
-
-                    const currentQData = room.currentQuestion; // 取得當前題目數據
-                    const roundEndTime = room.roundEndTime?.toDate();
-                    const now = new Date();
-                    timeLeft = Math.max(0, Math.floor((roundEndTime - now) / 1000));
-
-                    // 如果題目更新了，才重新載入題目
-                    if (currentQData && questionText.dataset.questionId !== currentQData.questionId) {
-                        questionText.dataset.questionId = currentQData.questionId;
-                        currentQuestionIndex = room.questionIndex;
-                        loadQuestionMultiplayer(currentQData); // 使用 currentQData 載入題目
-                        showMascotSpeech("新的對戰題目來了！", 1500, 'images/mascot_neutral.png');
-                        // 重置 feedbackText 和按鈕狀態
-                        feedbackText.textContent = '';
-                        enableControls();
-                    } else if (!currentQData) {
-                        questionText.textContent = '等待遊戲開始...'; // 剛進入 playing 狀態，但題目還沒同步
-                    }
-                    updateTimerDisplayMultiplayer();
-
-                    // 如果本地玩家已經提交了答案，則禁用控制項並顯示等待資訊
-                    if (players[myPlayerId]?.submittedAnswer !== null) {
-                        disableControls();
-                        feedbackText.textContent = "您已提交答案，等待其他玩家...";
-                    }
-
-                } else if (room.status === 'ended') {
-                    clearInterval(timerInterval);
-                    gameRoomContainer.classList.add('hidden');
-                    gameContainer.classList.remove('hidden'); // 顯示遊戲結束介面
-                    timerArea.classList.add('hidden');
-                    backgroundMusic.pause();
-                    backgroundMusic.currentTime = 0;
-
-                    const finalScores = room.players;
-                    let finalMessage = '遊戲結束！\n';
-                    if (room.winnerId) {
-                        finalMessage += `獲勝者是：${finalScores[room.winnerId]?.name}！\n`;
-                        showMascotSpeech("恭喜獲勝！", 3000, 'images/mascot_happy.png');
-                    } else {
-                        finalMessage += '遊戲平手！\n';
-                        showMascotSpeech("旗鼓相當，平手了！", 3000, 'images/mascot_smile.png');
-                    }
-                    finalMessage += '最終分數：\n';
-                    for (const pId in finalScores) {
-                        finalMessage += `${finalScores[pId].name}: ${finalScores[pId].score} 分\n`;
-                    }
-
-                    questionText.innerHTML = finalMessage.replace(/\n/g, '<br>');
-                    optionsContainer.innerHTML = '';
-                    fillInContainer.classList.add('hidden');
-                    feedbackText.textContent = '';
-                    nextButton.classList.add('hidden');
-                    startGameInRoomBtn.classList.add('hidden');
-                    submitScoreButton.classList.add('hidden');
-                    restartButton.classList.add('hidden');
-                    showLeaderboardGameEndButton.classList.add('hidden');
-                    leaveRoomBtn.classList.add('hidden');
-                    returnToModeSelectionFromGameButton.classList.remove('hidden'); // 遊戲結束時顯示返回按鈕
-                    returnToModeSelectionFromGameButton.textContent = '返回模式選擇'; // 確保文字正確
-                }
-            }, error => {
-                console.error("監聽房間狀態失敗:", error);
-                alert("房間連線斷開，請嘗試重新加入或返回大廳。");
-                showMultiplayerLobby(); // 連線失敗，返回大廳
-            });
-        }
-
-        // 離開房間
-        async function leaveRoom() {
-            if (!currentRoomId) {
-                showModeSelection(); // 如果沒有房間ID，直接返回模式選擇
-                return;
-            }
-
-            clearInterval(timerInterval);
-            if (roomSnapshotListener) {
-                roomSnapshotListener(); // 取消監聽
-            }
-
-            try {
-                const roomRef = db.collection('rooms').doc(currentRoomId);
-                const roomDoc = await roomRef.get();
-                if (roomDoc.exists) {
-                    const roomData = roomDoc.data();
-                    if (Object.keys(roomData.players).length === 1 && roomData.players[myPlayerId]) {
-                        // 如果我是最後一個玩家，則刪除房間
-                        await roomRef.delete();
-                        console.log(`房間 ${currentRoomId} 已刪除。`);
-                    } else if (roomData.players[myPlayerId]) {
-                        // 如果不是最後一個玩家，只移除自己
-                        const updates = {};
-                        updates[`players.${myPlayerId}`] = firebase.firestore.FieldValue.delete();
-                        // 如果我是房主，且還有其他玩家，則將房主轉移給另一個玩家
-                        if (roomData.hostId === myPlayerId && Object.keys(roomData.players).length > 1) {
-                            const remainingPlayers = Object.keys(roomData.players).filter(id => id !== myPlayerId);
-                            if (remainingPlayers.length > 0) {
-                                updates.hostId = remainingPlayers[0];
-                                updates.status = 'waiting'; // 房間回到等待狀態
-                                updates.currentQuestion = null;
-                                updates.questionIndex = 0;
-                                // 清空所有玩家的答題狀態，準備新遊戲
-                                for (const pId in roomData.players) {
-                                    if (pId !== myPlayerId) { // 不包含自己，因為自己要離開了
-                                        updates[`players.${pId}.submittedAnswer`] = null;
-                                        updates[`players.${pId}.lastAnswerTime`] = null;
-                                        updates[`players.${pId}.ready`] = false; // 重置準備狀態
-                                    }
-                                }
+                        if (roomData.status === 'ready') {
+                            roomStatusMessage.textContent = '兩位玩家已準備就緒！';
+                            if (roomData.host === currentPlayerName) { // 只有房主能看到開始按鈕
+                                startGameBtn.classList.remove('hidden');
                             }
+                        } else if (roomData.status === 'playing') {
+                            roomStatusMessage.textContent = '遊戲進行中...';
+                            startGameBtn.classList.add('hidden');
+                            // 在這裡可以觸發多人遊戲的開始邏輯
+                            // 例如：同步題目索引、顯示題目、等待所有玩家答案等
+                            console.log("Multiplayer game started!");
+                            // 這裡需要根據多人遊戲的具體機制來設計
+                            // 暫時隱藏控制按鈕，遊戲邏輯將由 Room 狀態驅動
+                            document.querySelector('#gameRoomContainer .controls').classList.add('hidden');
+                            showScreen('gameContainer'); // 進入遊戲畫面
+                            
+                            if (roomData.host === currentPlayerName && roomData.questions.length === 0) {
+                                // 房主在遊戲開始時生成題目 (這裡預設中等難度，可以自行調整)
+                                const gameQuestions = [...allQuestions['medium']]; // 多人遊戲統一使用中等難度
+                                for (let i = gameQuestions.length - 1; i > 0; i--) {
+                                    const j = Math.floor(Math.random() * (i + 1));
+                                    [gameQuestions[i], gameQuestions[j]] = [gameQuestions[j], gameQuestions[i]];
+                                }
+                                roomRef.update({ questions: gameQuestions.slice(0, 10) }); // 多人遊戲取前10題
+                            }
+                            
+                            // 客戶端和房主都從 roomData.questions 讀取題目
+                            questions = roomData.questions;
+                            totalQuestionsDisplay.textContent = questions.length;
+                            
+                            // 多人遊戲的題目索引和分數管理會更複雜，通常需要額外的字段
+                            // 例如 currentQuestionIndexMultiplayer, hostScore, clientScore
+                            // 為了簡化，這裡暫時沿用單人遊戲的 currentQuestionIndex 和 score
+                            // 但在真正的多人遊戲中，這些應該是房間狀態的一部分
+                            // if (roomData.currentQuestionIndex !== undefined) {
+                            //     currentQuestionIndex = roomData.currentQuestionIndex;
+                            // }
+                            // if (roomData.hostScore !== undefined && roomData.clientScore !== undefined) {
+                            //     scoreDisplay.textContent = currentPlayerName === roomData.host ? roomData.hostScore : roomData.clientScore;
+                            // }
+
+                            displayQuestion(); // 顯示當前題目 (需要題目和索引已同步)
+
+                        } else if (roomData.status === 'finished') {
+                            roomStatusMessage.textContent = `遊戲結束！房主 (${roomData.host}) 得分: ${roomData.hostScore}, 玩家 (${roomData.client}) 得分: ${roomData.clientScore}`;
+                            startGameBtn.classList.add('hidden');
+                            document.querySelector('#gameRoomContainer .controls').classList.remove('hidden'); // 遊戲結束後顯示控制按鈕
+                            // 顯示最終結果，並提供返回大廳的選項
+                            showScreen('gameRoomContainer'); // 遊戲結束回到房間介面
+                        } else if (roomData.status === 'waiting' && roomData.client === null) {
+                            roomStatusMessage.textContent = '等待其他玩家加入房間...';
                         }
-                        await roomRef.update(updates);
-                        console.log(`玩家 ${myPlayerName} 已離開房間 ${currentRoomId}。`);
+                    } else {
+                        // 房間不存在 (可能被刪除了)
+                        alert('房間已解散或不存在。');
+                        leaveRoom(); // 強制離開房間
                     }
-                }
-            } catch (error) {
-                console.error("離開房間失敗:", error);
-                alert("離開房間失敗，請稍後再試。");
-            } finally {
-                currentRoomId = null;
-                opponentPlayerId = null;
-                showMascotSpeech("已離開房間。", 1500, 'images/mascot_sad.png');
-                showMultiplayerLobby(); // 返回大廳，從大廳再返回模式選擇
+                }, error => {
+                    console.error("Error listening to room changes: ", error);
+                    alert("監聽房間狀態失敗，請重新整理。");
+                    leaveRoom(); // 發生錯誤時也離開
+                });
             }
         }
 
-        // 多人模式下開始遊戲 (僅限房主)
-        async function startGameInRoom() {
-            if (!currentRoomId) return;
-
-            try {
-                const roomRef = db.collection('rooms').doc(currentRoomId);
-                const roomDoc = await roomRef.get();
-                const roomData = roomDoc.data();
-
-                if (roomData.hostId !== myPlayerId) {
-                    alert('只有房主才能開始遊戲！');
-                    return;
+        startGameBtn.addEventListener('click', async () => {
+            if (currentRoomId && roomRef) {
+                // 房主點擊開始遊戲
+                // 在開始遊戲前，先為多人遊戲生成題目並儲存到房間數據中
+                const gameQuestions = [...allQuestions['medium']]; // 多人遊戲統一使用中等難度
+                for (let i = gameQuestions.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [gameQuestions[i], gameQuestions[j]] = [gameQuestions[j], gameQuestions[i]];
                 }
-                if (Object.keys(roomData.players).length < 2) {
-                    alert('至少需要兩位玩家才能開始遊戲！');
-                    return;
-                }
+                const selectedQuestions = gameQuestions.slice(0, 10); // 多人遊戲取前10題
 
-                // 隨機選取中級題目，並為每個題目生成一個唯一的 ID
-                const questionsForGame = getRandomQuestions(NUM_QUESTIONS_PER_GAME, 'medium');
-                const questionsWithIds = questionsForGame.map((q, idx) => ({ ...q, questionId: `q_${idx}_${Date.now()}` }));
-
-                const gameQuestionsMap = {};
-                questionsWithIds.forEach((q, index) => {
-                    gameQuestionsMap[q.questionId] = { // 使用 questionId 作為鍵
-                        question: q.question,
-                        options: q.options || [],
-                        type: q.type,
-                        image: q.image || null,
-                        correctAnswer: q.answer
-                    };
-                });
-
-                const firstQuestion = questionsWithIds[0];
-                const now = new Date();
                 await roomRef.update({
                     status: 'playing',
-                    questions: gameQuestionsMap,
-                    currentQuestion: {
-                        questionId: firstQuestion.questionId,
-                        question: firstQuestion.question,
-                        options: firstQuestion.options || [],
-                        type: firstQuestion.type,
-                        image: firstQuestion.image || null,
-                    },
-                    questionIndex: 0,
-                    roundEndTime: firebase.firestore.Timestamp.fromMillis(now.getTime() + TIME_PER_QUESTION * 1000),
-                    winnerId: null,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    // 重置所有玩家的答題狀態，準備新遊戲
-                    'players': Object.keys(roomData.players).reduce((acc, playerId) => {
-                        acc[playerId] = { ...roomData.players[playerId], score: 0, submittedAnswer: null, lastAnswerTime: null, ready: false };
-                        return acc;
-                    }, {})
+                    hostScore: 0,
+                    clientScore: 0,
+                    currentQuestionIndex: 0, // 重置多人遊戲進度
+                    questions: selectedQuestions // 將題目儲存到房間數據中
                 });
-
-                gameRoomContainer.classList.add('hidden');
-                gameContainer.classList.remove('hidden');
-                timerArea.classList.remove('hidden');
-                backgroundMusic.play().catch(e => console.log("背景音樂播放失敗:", e));
-                showMascotSpeech("遊戲開始！祝您好運！", 2000, 'images/mascot_happy.png');
-
-
-            } catch (error) {
-                console.error("啟動多人遊戲失敗:", error);
-                alert("啟動遊戲失敗，請稍後再試。");
-            }
-        }
-
-
-        // 多人模式下的載入題目
-        function loadQuestionMultiplayer(q) {
-            optionsContainer.innerHTML = '';
-            fillInContainer.classList.add('hidden');
-            fillInInput.value = '';
-            feedbackText.textContent = '';
-            questionImage.classList.add('hidden'); // 隱藏圖片
-            questionImage.src = ''; // 清空圖片源
-            timerArea.classList.remove('hidden');
-            timerArea.classList.remove('time-low');
-
-            questionText.textContent = q.question;
-
-            if (q.image) { // 如果是圖片題
-                questionImage.src = q.image;
-                questionImage.classList.remove('hidden');
-            }
-
-            if (q.type === 'multiple-choice' || q.type === 'image-choice') {
-                optionsContainer.classList.remove('hidden');
-                optionsContainer.style.display = 'grid';
-                q.options.forEach((option, index) => {
-                    const button = document.createElement('button');
-                    button.classList.add('option-button');
-                    button.textContent = option;
-                    button.dataset.index = index;
-                    button.addEventListener('click', () => submitAnswerMultiplayer(index, q.type));
-                    optionsContainer.appendChild(button);
-                });
-            } else if (q.type === 'fill-in-the-blank' || q.type === 'description-fill-in') {
-                optionsContainer.classList.add('hidden');
-                fillInContainer.classList.remove('hidden');
-                fillInInput.focus();
-                fillInInput.onkeydown = (event) => {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        submitAnswerMultiplayer(fillInInput.value.trim(), q.type);
-                    }
-                };
-                fillInSubmitButton.onclick = () => submitAnswerMultiplayer(fillInInput.value.trim(), q.type);
-            }
-
-            enableControls();
-            comboStreakDisplay.classList.add('hidden');
-        }
-
-        // 更新計時器顯示 (多人模式) - 會由 Firebase 監聽觸發
-        function updateTimerDisplayMultiplayer() {
-            // 這個函數被 firestore onSnapshot 調用時，timeLeft 已經根據 room.roundEndTime 設置
-            timerDisplay.textContent = timeLeft;
-            if (timeLeft <= WARNING_TIME) {
-                timerArea.classList.add('time-low');
-            } else {
-                timerArea.classList.remove('time-low');
-            }
-        }
-
-
-        // 多人模式下提交答案
-        async function submitAnswerMultiplayer(answer, questionType) {
-            if (!currentRoomId || !myPlayerId) return;
-
-            clearInterval(timerInterval); // 提交答案後立即停止本地計時器
-            disableControls();
-
-            try {
-                const roomRef = db.collection('rooms').doc(currentRoomId);
-                const roomDoc = await roomRef.get();
-                const roomData = roomDoc.data();
-
-                if (!roomData || roomData.status !== 'playing' || roomData.questionIndex !== currentQuestionIndex) {
-                    console.warn("不是當前題目或遊戲狀態不對，不提交答案。");
-                    feedbackText.textContent = "題目已更新或遊戲狀態不正確。";
-                    return;
-                }
-
-                if (roomData.players[myPlayerId]?.submittedAnswer !== null) {
-                    feedbackText.textContent = "您已提交過此題答案。";
-                    return;
-                }
-
-                // 獲取正確答案以進行本地回饋（實際判斷建議在 Cloud Function）
-                const currentQuestionId = roomData.currentQuestion.questionId;
-                const currentQuestionDetails = roomData.questions[currentQuestionId];
-                let isCorrectLocal = false;
-                let actualCorrectAnswer = '';
-
-                if (currentQuestionDetails) {
-                    actualCorrectAnswer = currentQuestionDetails.correctAnswer;
-                    if (questionType === 'multiple-choice' || questionType === 'image-choice') {
-                        isCorrectLocal = (answer === currentQuestionDetails.correctAnswer);
-                    } else if (questionType === 'fill-in-the-blank' || questionType === 'description-fill-in') {
-                        const normalizedSubmitted = String(answer).toLowerCase().replace(/[^\u4e00-\u9fa5a-z0-9]/g, '');
-                        const normalizedCorrect = String(currentQuestionDetails.correctAnswer).toLowerCase().replace(/[^\u4e00-\u9fa5a-z0-9]/g, '');
-                        isCorrectLocal = (normalizedSubmitted === normalizedCorrect);
-                    }
-                }
-
-                await roomRef.update({
-                    [`players.${myPlayerId}.lastAnswerTime`]: firebase.firestore.FieldValue.serverTimestamp(),
-                    [`players.${myPlayerId}.submittedAnswer`]: answer,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                if (isCorrectLocal) {
-                    // 本地回饋（分數增加將由 Cloud Function 處理）
-                    feedbackText.textContent = "答對了！答案已提交，等待對手...";
-                    playSound(correctSound);
-                    showMascotSpeech("好棒！", 1500, 'images/mascot_happy.png');
-                } else {
-                    feedbackText.textContent = `答錯了。答案已提交，等待對手... (正確答案: ${actualCorrectAnswer})`;
-                    playSound(wrongSound);
-                    showMascotSpeech("嗯...再想想。", 1500, 'images/mascot_sad.png');
-                }
-                comboStreakDisplay.classList.add('hidden');
-
-                // **重要提示：**
-                // 真正的分數更新和遊戲流程推進（如下一題、遊戲結束判斷），
-                // 應透過 **Firebase Cloud Functions** 來處理。
-                // 這裡的邏輯只用於前端的即時回饋和等待狀態。
-                // Cloud Function 會監聽 room document 的更新，當所有玩家都提交答案，或時間到時，
-                // 再由 Cloud Function 負責更新玩家分數，清空 lastAnswerTime/submittedAnswer，
-                // 並推進 currentQuestionIndex 和 roundEndTime，或將 status 改為 'ended'。
-
-            } catch (error) {
-                console.error("提交答案失敗:", error);
-                feedbackText.textContent = "答案提交失敗，請重試。";
-            }
-        }
-
-
-        // --- 事件監聽 ---
-        showLeaderboardInitialButton.addEventListener('click', showLeaderboard);
-        showLeaderboardGameEndButton.addEventListener('click', showLeaderboard);
-        returnFromLeaderboardButton.addEventListener('click', returnFromLeaderboard);
-        nextButton.addEventListener('click', nextQuestion);
-        submitScoreButton.addEventListener('click', submitScore);
-        // --- 修正點 10: 確保重新開始按鈕返回模式選擇，而非直接重新遊戲 ---
-        restartButton.addEventListener('click', () => {
-            showModeSelection(); // 返回首頁
-        });
-
-        // 監聽模式選擇按鈕 (在首頁)
-        levelSelectionContainer.addEventListener('click', (event) => {
-            if (event.target.classList.contains('mode-button')) {
-                const mode = event.target.dataset.mode;
-                currentMode = mode;
-                if (mode === 'single') {
-                    showLevelSelectionForSinglePlayer();
-                } else { // 'multi'
-                    showMultiplayerLobby();
-                }
-            } else if (event.target.id === 'show-leaderboard-initial') {
-                showLeaderboard();
+                // 遊戲畫面會監聽到 status 變為 'playing' 並開始遊戲
             }
         });
 
-        createRoomBtn.addEventListener('click', createRoom);
-        joinRoomBtn.addEventListener('click', () => joinRoom());
-        refreshRoomsBtn.addEventListener('click', updateAvailableRooms);
-        startGameInRoomBtn.addEventListener('click', startGameInRoom);
         leaveRoomBtn.addEventListener('click', leaveRoom);
-        // --- 修正點 11: 統一返回模式選擇的按鈕事件 ---
-        returnToModeSelectionFromLobbyBtn.addEventListener('click', showModeSelection);
-        if (returnToModeSelectionFromGameButton) { // 檢查元素是否存在再綁定
-            returnToModeSelectionFromGameButton.addEventListener('click', () => {
-                showModeSelection();
-            });
+
+        async function leaveRoom() {
+            if (currentRoomId && roomRef) {
+                try {
+                    const roomDoc = await roomRef.get();
+                    if (roomDoc.exists) {
+                        const roomData = roomDoc.data();
+                        if (roomData.host === currentPlayerName) {
+                            // 如果是房主，直接刪除房間
+                            await roomRef.delete();
+                            console.log('房間已解散。');
+                        } else if (roomData.client === currentPlayerName) {
+                            // 如果是客戶端，移除自己
+                            await roomRef.update({ client: null, status: 'waiting' });
+                            console.log('已離開房間。');
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error leaving/deleting room: ", e);
+                } finally {
+                    if (roomUnsubscribe) {
+                        roomUnsubscribe(); // 取消監聽
+                        roomUnsubscribe = null;
+                    }
+                    currentRoomId = null;
+                    roomRef = null;
+                    showScreen('multiplayerLobbyContainer'); // 返回大廳
+                    refreshRoomList();
+                    resetGame(); // 清理遊戲狀態
+                }
+            } else {
+                showScreen('multiplayerLobbyContainer'); // 沒有房間直接回大廳
+                refreshRoomList();
+            }
         }
 
+        // 初始載入時顯示主選單
+        document.addEventListener('DOMContentLoaded', () => {
+            showScreen('levelSelectionContainer');
+            // 確保難度選擇器在開始時是可見的
+            difficultySelect.classList.remove('hidden'); 
+        });
 
-        // 初始狀態：顯示模式選擇介面
-        showModeSelection();
     </script>
 </body>
 </html>
